@@ -15,15 +15,19 @@ return new class extends Migration
             if (Schema::hasColumn('books', 'genre')) {
                 $table->dropColumn('genre');
             }
+
             if (Schema::hasColumn('books', 'category')) {
                 $table->dropColumn('category');
             }
+
             if (Schema::hasColumn('books', 'author')) {
                 $table->dropColumn('author');
             }
+
             if (Schema::hasColumn('books', 'publisher')) {
                 $table->dropColumn('publisher');
             }
+
             if (Schema::hasColumn('books', 'type')) {
                 $table->dropColumn('type');
             }
@@ -39,17 +43,21 @@ return new class extends Migration
             if (!Schema::hasColumn('books', 'type')) {
                 $table->string('type')->after('name');
             }
+
             if (!Schema::hasColumn('books', 'genre')) {
                 $table->string('genre')->after('type');
             }
+
             if (!Schema::hasColumn('books', 'category')) {
-                $table->dropColumn('category')->after('genre');
+                $table->string('category')->after('genre');
             }
+
             if (!Schema::hasColumn('books', 'author')) {
-                $table->dropColumn('author')->after('cover_image');
+                $table->string('author')->after('cover_image');
             }
+
             if (!Schema::hasColumn('books', 'publisher')) {
-                $table->dropColumn('publisher')->after('author');
+                $table->string('publisher')->after('author');
             }
         });
     }

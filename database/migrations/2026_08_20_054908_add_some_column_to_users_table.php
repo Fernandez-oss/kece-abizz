@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            if(!Schema::hasColumn('users', 'phone_number')) {
+            if (!Schema::hasColumn('users', 'phone_number')) {
                 $table->string('phone_number')->unique()->after('name');
             }
 
-            if(!Schema::hasColumn('users', 'profile_image')) {
-                $table->string('profile_image')->after('password');
+            if (!Schema::hasColumn('users', 'profile_image')) {
+                $table->string('profile_image')->nullable()->after('password');
             }
         });
     }
@@ -28,11 +28,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            if(Schema::hasColumn('users', 'phone_number')) {
+            if (Schema::hasColumn('users', 'phone_number')) {
                 $table->dropColumn('phone_number');
             }
 
-            if(Schema::hasColumn('users', 'profile_image')) {
+            if (Schema::hasColumn('users', 'profile_image')) {
                 $table->dropColumn('profile_image');
             }
         });

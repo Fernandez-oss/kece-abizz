@@ -1,15 +1,19 @@
-<header class="bg-[#16213A] text-white">
-    <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-        <a href="{{ route('users.index') }}" class="flex items-center gap-3">
-            <span>
-                <span class="font-display block text-lg font-semibold leading-none">Sistem Perpustakaan Sekolah</span>
-                <span class="text-[11px] uppercase tracking-[0.2em] text-white/50">Menyediakan Akses ke Berbagai Sumber Belajar</span>
-            </span>
-        </a>
-        <nav class="hidden gap-8 text-sm md:flex">
-            <a href="{{ route('users.index') }}" class="text-white/55 hover:text-white">Pengguna</a>
-            <a href="{{ route('books.index') }}" class="text-white/55 hover:text-white">Buku</a>
-        </nav>
-    </div>
-    <div class="h-0.5 bg-[#A16207]"></div>
-</header>
+<div class="min-h-screen bg-slate-50 flex">
+    <!-- Sidebar / Header -->
+    <header class="flex w-64 flex-col border-r border-[#6688a5] bg-[#7A9BB8] px-4 py-6 text-white shadow-xl min-h-screen">
+        <div>
+            <!-- Garis putih di bawah sudah dihapus dari tag a di bawah ini -->
+            <a href="{{ route('users.index') }}" class="mb-4 flex items-center gap-4">
+                <p class="flex h-14 w-14 items-center justify-center border border-white text-xl">p</p>
+                <span class="block text-[20px] uppercase tracking-[0.2em] text-white/80">OwlPost</span>
+            </a>
+
+            <nav class="mx-auto w-36 h-110 border border-white/10 flex flex-col gap-3 p-3" aria-label="Navigasi utama">
+                <a href="" class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white focus:bg-white/15 focus:text-white">Home</a>
+                <a href="" class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white focus:bg-white/15 focus:text-white">Search</a>
+                <a href="" class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white focus:bg-white/15 focus:text-white">Category</a>
+                <a href="" class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white focus:bg-white/15 focus:text-white">History</a>
+            </nav>
+        </div>
+    </header>
+</div>
