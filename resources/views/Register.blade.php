@@ -116,7 +116,7 @@
                 <!-- Tombol Register -->
                 <button
                     type="submit"
-                    class="w-[calc(100%-2rem)] mx-4 bg-[#003665] text-white py-3 rounded-md hover:bg-[#003665]">
+                    class="w-[calc(100%-2rem)] text-lg mx-4 bg-[#003665] text-white py-3 rounded-md hover:bg-[#003665]">
                     Register
                 </button>
             </form>

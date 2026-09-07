@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; // Tambahkan facade Auth
 use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
@@ -30,6 +31,9 @@ class RegisterController extends Controller
 
         $user->save();
 
-        return redirect()->route('login');
+        // Loginkan user yang baru saja dibuat
+        Auth::login($user);
+
+        return redirect()->route('name');
     }
 }

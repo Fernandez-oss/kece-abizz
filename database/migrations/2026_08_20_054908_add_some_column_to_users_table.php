@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             if (!Schema::hasColumn('users', 'phone_number')) {
-                $table->string('phone_number')->unique()->after('name');
+                $table->string('phone_number')->unique();
             }
 
             if (!Schema::hasColumn('users', 'profile_image')) {
-                $table->string('profile_image')->nullable()->after('password');
+                $table->string('profile_image')->nullable();
             }
         });
     }

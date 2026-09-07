@@ -19,13 +19,10 @@ class LoginController extends Controller
             return back()->withErrors(['name' => 'Nama atau password salah.',])->withInput();
         }
         if ($user->role === 'user') {
-            return redirect()->route('proposals.index');
+            return redirect()->route('users.index');
         }
-        if ($user->role === 'Accepter') {
-            return redirect()->route('accepters.index');
-        }
-        if ($user->role === 'Cashier') {
-            return redirect()->route('cashiers.index');
+        if ($user->role === 'admin') {
+            return redirect()->route('admins.index');
         }
         return back()->withErrors(['name' => 'Role akun tidak dikenali.',]);
     }

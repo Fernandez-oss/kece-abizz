@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 
@@ -8,30 +9,19 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $title = "Sistem Perpustakaan Sekolah - Daftar Admin";
-        $admins = [
-            [
-                'id' => 1,
-                'name' => 'John Doe',
-                'email' => 'john.doe@example.com',
-            ],
-            [
-                'id' => 2,
-                'name' => 'Jane Smith',
-                'email' => 'jane.smith@example.com',
-            ]
-        ];
+        $title = "Sistem Perpustakaan Sekolah - Daftar Pengguna";
+
+        $users = User::all();
 
         return view('admins.index', [
             'title' => $title,
-            'admins' => $admins
+            'users' => $users
         ]);
     }
-
     public function show(string $id)
     {
         $title = "Sistem Sekolah - Detail Admin";
-        
+
         return view('admins.show', [
             'title' => $title,
         ]);
@@ -40,7 +30,7 @@ class AdminController extends Controller
     public function create()
     {
         $title = "Sistem Sekolah - Tambah Admin";
-        
+
         return view('admins.create', [
             'title' => $title,
         ]);
@@ -50,7 +40,7 @@ class AdminController extends Controller
     public function edit(string $id)
     {
         $title = "Sistem Sekolah - Ubah Admin";
-        
+
         return view('admins.edit', [
             'title' => $title,
         ]);
@@ -71,4 +61,3 @@ class AdminController extends Controller
         return "Menghapus data Admin";
     }
 }
-                
