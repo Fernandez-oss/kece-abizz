@@ -4,91 +4,91 @@
 
 @section('content')
 
+<div class="mb-8 border-b border-[#E5E3DB] pb-5">
+    <p class="mb-1 text-[11px] uppercase tracking-[0.2em] text-[#A16207]">
+        Tahun Ajaran 2025/2026
+    </p>
 
-<div class="mb-8 flex items-end justify-between border-b border-[#E5E3DB] pb-5">
-    <div>
-        <p class="mb-1 text-[11px] uppercase tracking-[0.2em] text-[#A16207]">Tahun Ajaran 2025/2026</p>
-        <h1 class="font-display text-3xl font-semibold text-[#16213A]">Daftar Pengguna</h1>
+    <h1 class="font-display text-3xl font-semibold text-[#16213A]">
+        Daftar Buku
+    </h1>
+
+    <p class="mt-2 text-sm text-gray-500">
+        Pilih buku yang ingin kamu lihat.
+    </p>
+</div>
+
+
+@if ($books->isEmpty())
+
+    <div class="border border-[#E5E3DB] bg-white px-6 py-12 text-center">
+        <p class="font-medium text-[#16213A]">
+            Belum ada buku yang tersedia.
+        </p>
     </div>
-    <a href="{{ route('users.create') }}" class="bg-[#16213A] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#26324f]">
-        Tambah Pengguna
-    </a>
-</div>
 
-<div class="border border-[#E5E3DB] bg-white">
-    <table class="w-full text-left text-sm">
-        <thead>
-            <tr class="border-b border-[#16213A] text-[11px] uppercase tracking-[0.15em] text-[#16213A]">
-                <th class="w-14 px-5 py-3.5 font-semibold">No.</th>
-                <th class="px-5 py-3.5 font-semibold">Foto</th>
-                <th class="px-5 py-3.5 font-semibold">Nama</th>
-                <th class="px-5 py-3.5 font-semibold">Nomor Telepon</th>
-                <th class="px-5 py-3.5 text-right font-semibold">Tindakan</th>
-            </tr>
-        </thead>
+@else
 
-        <tbody>
-            @foreach ($users as $user)
-            <tr class="border-b border-[#EFEDE6] hover:bg-[#FAF9F5]">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 
-                <td class="px-5 py-4 font-display text-lg text-[#A16207]">
-                    {{ $loop->iteration }}
-                </td>
+        @foreach ($books as $book)
 
-                <!-- FOTO PROFIL -->
-                <td class="px-5 py-4">
-                    @if ($user->profile_image)
-                    <img
-                        src="{{ asset('profile_images/' . $user->profile_image) }}"
-                        alt="Foto {{ $user->name }}"
-                        class="w-16 h-16 object-cover border">
+            <a
+                href="{{ route('users.show', ['id' => $book->id]) }}"
+                class="group overflow-hidden border border-[#E5E3DB] bg-white transition hover:-translate-y-1 hover:shadow-md">
+
+                {{-- COVER --}}
+                <div class="h-64 bg-[#F7F6F1]">
+
+                    @if ($book->cover_image)
+
+                        <img
+                            src="{{ asset('cover_images/' . $book->cover_image) }}"
+                            alt="Cover {{ $book->name }}"
+                            class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+
                     @else
-                    <div class="w-16 h-16 border flex items-center justify-center text-xs text-gray-500">
-                        Tidak ada foto
-                    </div>
+
+                        <div class="flex h-full items-center justify-center text-sm text-gray-400">
+                            Tidak ada cover
+                        </div>
+
                     @endif
-                </td>
 
-                <td class="px-5 py-4 font-medium text-[#16213A]">
-                    {{ $user->name }}
-                </td>
+                </div>
 
-                <td class="px-5 py-4">
-                    {{ $user->phone_number }}
-                </td>
 
-                <td class="px-5 py-4">
-                    <div class="flex justify-end gap-4 text-xs font-medium">
-                        <a href="{{ route('users.show', ['id' => $user->id]) }}"
-                            class="text-[#16213A] hover:text-[#A16207]">
-                            Lihat
-                        </a>
+                {{-- DATA BUKU --}}
+                <div class="p-5">
 
-                        <a href="{{ route('users.edit', ['id' => $user->id]) }}"
-                            class="text-[#16213A] hover:text-[#A16207]">
-                            Ubah
-                        </a>
+                    <p class="mb-1 text-[10px] uppercase tracking-[0.15em] text-[#A16207]">
+                        Buku
+                    </p>
 
-                        <form
-                            action="{{ route('users.destroy', ['id' => $user->id]) }}"
-                            method="POST"
-                            onsubmit="return confirm('Hapus data pengguna ini?')">
+                    <h2 class="line-clamp-2 text-lg font-semibold text-[#16213A]">
+                        {{ $book->name }}
+                    </h2>
 
-                            @csrf
-                            @method('DELETE')
+                    @if ($book->author)
+                        <p class="mt-2 text-sm text-gray-500">
+                            {{ $book->author->name }}
+                        </p>
+                    @endif
 
-                            <button type="submit"
-                                class="text-red-700 hover:text-red-900">
-                                Hapus
-                            </button>
-                        </form>
-                    </div>
-                </td>
+                    @if ($book->description)
+                        <p class="mt-3 line-clamp-3 text-sm leading-6 text-gray-600">
+                            {{ $book->description }}
+                        </p>
+                    @endif
 
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+                </div>
+
+            </a>
+
+        @endforeach
+
+    </div>
+
+@endif
 
 @endsection

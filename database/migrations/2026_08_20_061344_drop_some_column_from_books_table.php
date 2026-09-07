@@ -23,11 +23,7 @@ return new class extends Migration
             if (Schema::hasColumn('books', 'author')) {
                 $table->dropColumn('author');
             }
-
-            if (Schema::hasColumn('books', 'publisher')) {
-                $table->dropColumn('publisher');
-            }
-
+            
             if (Schema::hasColumn('books', 'type')) {
                 $table->dropColumn('type');
             }
@@ -54,10 +50,6 @@ return new class extends Migration
 
             if (!Schema::hasColumn('books', 'author')) {
                 $table->string('author')->after('cover_image');
-            }
-
-            if (!Schema::hasColumn('books', 'publisher')) {
-                $table->string('publisher')->after('author');
             }
         });
     }

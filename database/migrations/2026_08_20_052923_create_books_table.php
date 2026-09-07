@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('category');
             $table->string('cover_image');
             $table->string('author');
-            $table->string('publisher');
+            $table->unsignedBigInteger('publisher_id');
             $table->year('year');
             $table->integer('stock');
             $table->text('description');

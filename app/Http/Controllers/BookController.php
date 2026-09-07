@@ -8,36 +8,45 @@ use App\Models\Author;
 use App\Models\Genre;
 use App\Models\Category;
 use App\Models\BookType;
+use App\Models\Publisher;
 
 class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::all();
+        $books = Book::with([
+            'author',
+            'publisher',
+            'genre',
+            'category',
+            'bookType'
+        ])->get();
 
         return view('books.index', compact('books'));
     }
 
     public function show($id)
     {
-        $book = Book::findOrFail($id);
+        $book = Book::with([
+            'author',
+            'publisher',
+            'genre',
+            'category',
+            'bookType'
+        ])->findOrFail($id);
 
         return view('books.show', compact('book'));
     }
 
     public function create()
     {
-        $authors = Author::all();
-        $genres = Genre::all();
-        $categories = Category::all();
-        $bookTypes = BookType::all();
-
-        return view('books.create', compact(
-            'authors',
-            'genres',
-            'categories',
-            'bookTypes'
-        ));
+        return view('books.create', [
+            'authors' => Author::all(),
+            'publishers' => Publisher::all(),
+            'genres' => Genre::all(),
+            'categories' => Category::all(),
+            'bookTypes' => BookType::all(),
+        ]);
     }
 
     public function edit($id)
@@ -45,6 +54,7 @@ class BookController extends Controller
         $book = Book::findOrFail($id);
 
         $authors = Author::all();
+        $publishers = Publisher::all();
         $genres = Genre::all();
         $categories = Category::all();
         $bookTypes = BookType::all();
@@ -52,6 +62,7 @@ class BookController extends Controller
         return view('books.edit', compact(
             'book',
             'authors',
+            'publishers',
             'genres',
             'categories',
             'bookTypes'
@@ -63,6 +74,7 @@ class BookController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'author_id' => 'required|exists:authors,id',
+            'publisher_id' => 'required|exists:publishers,id',
             'genre_id' => 'required|exists:genres,id',
             'category_id' => 'required|exists:categories,id',
             'book_type_id' => 'required|exists:book_types,id',
@@ -73,6 +85,7 @@ class BookController extends Controller
         ]);
 
         $file = $request->file('cover_image');
+
         $filename = time() . '_' . $file->getClientOriginalName();
 
         $file->move(public_path('cover_images'), $filename);
@@ -80,6 +93,7 @@ class BookController extends Controller
         Book::create([
             'name' => $request->name,
             'author_id' => $request->author_id,
+            'publisher_id' => $request->publisher_id,
             'genre_id' => $request->genre_id,
             'category_id' => $request->category_id,
             'book_type_id' => $request->book_type_id,
@@ -101,6 +115,7 @@ class BookController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'author_id' => 'required|exists:authors,id',
+            'publisher_id' => 'required|exists:publishers,id',
             'genre_id' => 'required|exists:genres,id',
             'category_id' => 'required|exists:categories,id',
             'book_type_id' => 'required|exists:book_types,id',
@@ -112,6 +127,7 @@ class BookController extends Controller
 
         $book->name = $request->name;
         $book->author_id = $request->author_id;
+        $book->publisher_id = $request->publisher_id;
         $book->genre_id = $request->genre_id;
         $book->category_id = $request->category_id;
         $book->book_type_id = $request->book_type_id;
@@ -130,6 +146,7 @@ class BookController extends Controller
             }
 
             $file = $request->file('cover_image');
+
             $filename = time() . '_' . $file->getClientOriginalName();
 
             $file->move(public_path('cover_images'), $filename);
@@ -148,7 +165,6 @@ class BookController extends Controller
     {
         $book = Book::findOrFail($id);
 
-        // Hapus file cover dari folder public/cover_images
         if ($book->cover_image) {
             $path = public_path('cover_images/' . $book->cover_image);
 
@@ -157,7 +173,6 @@ class BookController extends Controller
             }
         }
 
-        // Hapus data buku
         $book->delete();
 
         return redirect()

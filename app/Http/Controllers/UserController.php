@@ -4,32 +4,41 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Book;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $title = "Sistem Perpustakaan Sekolah - Daftar Pengguna";
+        $title = "Sistem Perpustakaan Sekolah - Daftar Buku";
 
-        // Ambil semua data user
-        $users = User::all();
+        $books = Book::with([
+            'author',
+            'genre',
+            'category',
+            'bookType'
+        ])->get();
 
         return view('users.index', [
             'title' => $title,
-            'users' => $users
+            'books' => $books
         ]);
     }
 
     public function show(string $id)
     {
-        $title = "Sistem Sekolah - Detail Pengguna";
+        $title = "Sistem Perpustakaan Sekolah - Detail Buku";
 
-        // Ambil user berdasarkan ID yang dipilih
-        $user = User::findOrFail($id);
+        $book = Book::with([
+            'author',
+            'genre',
+            'category',
+            'bookType'
+        ])->findOrFail($id);
 
         return view('users.show', [
             'title' => $title,
-            'user' => $user
+            'book' => $book
         ]);
     }
 
@@ -46,7 +55,6 @@ class UserController extends Controller
     {
         $title = "Sistem Sekolah - Ubah Pengguna";
 
-        // Ambil user yang mau diedit
         $user = User::findOrFail($id);
 
         return view('users.edit', [
@@ -57,19 +65,16 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // Nanti isi dengan proses simpan user
         return "Melakukan penambahan data pengguna";
     }
 
     public function update(Request $request, string $id)
     {
-        // Nanti isi dengan proses update user
         return "Melakukan perubahan data pengguna";
     }
 
     public function destroy(string $id)
     {
-        // Nanti isi dengan proses hapus user
         return "Menghapus data pengguna";
     }
 }

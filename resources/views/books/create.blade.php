@@ -18,7 +18,7 @@
 <div class="mb-6 border border-red-300 bg-red-50 p-4 text-sm text-red-700">
     <ul class="list-disc pl-5">
         @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
+        <li>{{ $error }}</li>
         @endforeach
     </ul>
 </div>
@@ -58,11 +58,36 @@
             <option value="">-- Pilih Author --</option>
 
             @foreach ($authors as $author)
-                <option
-                    value="{{ $author->id }}"
-                    {{ old('author_id') == $author->id ? 'selected' : '' }}>
-                    {{ $author->name }}
-                </option>
+            <option
+                value="{{ $author->id }}"
+                {{ old('author_id') == $author->id ? 'selected' : '' }}>
+                {{ $author->name }}
+            </option>
+            @endforeach
+
+        </select>
+    </div>
+
+    {{-- Publisher --}}
+    <div class="mb-5">
+        <label for="publisher_id" class="mb-2 block text-sm font-medium text-[#16213A]">
+            Publisher
+        </label>
+
+        <select
+            name="publisher_id"
+            id="publisher_id"
+            class="w-full border border-[#E5E3DB] bg-white px-4 py-3 focus:border-[#16213A] focus:outline-none"
+            required>
+
+            <option value="">-- Pilih Publisher --</option>
+
+            @foreach ($publishers as $publisher)
+            <option
+                value="{{ $publisher->id }}"
+                {{ old('publisher_id') == $publisher->id ? 'selected' : '' }}>
+                {{ $publisher->name }}
+            </option>
             @endforeach
 
         </select>
@@ -83,11 +108,11 @@
             <option value="">-- Pilih Genre --</option>
 
             @foreach ($genres as $genre)
-                <option
-                    value="{{ $genre->id }}"
-                    {{ old('genre_id') == $genre->id ? 'selected' : '' }}>
-                    {{ $genre->name }}
-                </option>
+            <option
+                value="{{ $genre->id }}"
+                {{ old('genre_id') == $genre->id ? 'selected' : '' }}>
+                {{ $genre->name }}
+            </option>
             @endforeach
 
         </select>
@@ -108,11 +133,11 @@
             <option value="">-- Pilih Category --</option>
 
             @foreach ($categories as $category)
-                <option
-                    value="{{ $category->id }}"
-                    {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                    {{ $category->name }}
-                </option>
+            <option
+                value="{{ $category->id }}"
+                {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                {{ $category->name }}
+            </option>
             @endforeach
 
         </select>
@@ -133,11 +158,11 @@
             <option value="">-- Pilih Tipe Buku --</option>
 
             @foreach ($bookTypes as $bookType)
-                <option
-                    value="{{ $bookType->id }}"
-                    {{ old('book_type_id') == $bookType->id ? 'selected' : '' }}>
-                    {{ $bookType->name }}
-                </option>
+            <option
+                value="{{ $bookType->id }}"
+                {{ old('book_type_id') == $bookType->id ? 'selected' : '' }}>
+                {{ $bookType->name }}
+            </option>
             @endforeach
 
         </select>

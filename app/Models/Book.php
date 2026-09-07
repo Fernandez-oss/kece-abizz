@@ -7,12 +7,15 @@ use App\Models\Author;
 use App\Models\Genre;
 use App\Models\Category;
 use App\Models\BookType;
+use App\Models\Publisher;
+
 
 class Book extends Model
 {
     protected $fillable = [
         'name',
         'author_id',
+        'publisher_id',
         'genre_id',
         'category_id',
         'book_type_id',
@@ -25,6 +28,11 @@ class Book extends Model
     public function author()
     {
         return $this->belongsTo(Author::class);
+    }
+
+    public function publisher()
+    {
+        return $this->belongsTo(Publisher::class);
     }
 
     public function genre()
