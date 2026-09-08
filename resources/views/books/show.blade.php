@@ -21,14 +21,14 @@
         {{-- Cover --}}
         <div class="shrink-0">
             @if ($book->cover_image)
-                <img
-                    src="{{ asset('cover_images/' . $book->cover_image) }}"
-                    alt="{{ $book->name }}"
-                    class="h-80 w-56 border border-[#E5E3DB] object-cover">
+            <img
+                src="{{ asset('cover_images/' . $book->cover_image) }}"
+                alt="{{ $book->name }}"
+                class="h-80 w-56 border border-[#E5E3DB] object-cover">
             @else
-                <div class="flex h-80 w-56 items-center justify-center border border-[#E5E3DB] text-sm text-gray-400">
-                    Tidak ada cover
-                </div>
+            <div class="flex h-80 w-56 items-center justify-center border border-[#E5E3DB] text-sm text-gray-400">
+                Tidak ada cover
+            </div>
             @endif
         </div>
 
@@ -59,7 +59,17 @@
                         Publisher
                     </p>
                     <p class="mt-1 text-[#16213A]">
-                        {{ $book->publisher->name ?? '-' }}
+                        @if ($book->publishers->count())
+                    <div>
+                        <p class="text-xs uppercase tracking-wider text-gray-400">
+                            Publisher
+                        </p>
+
+                        <p class="mt-1 text-sm text-[#16213A]">
+                            {{ $book->publishers->pluck('name')->join(', ') }}
+                        </p>
+                    </div>
+                    @endif
                     </p>
                 </div>
 
@@ -69,7 +79,17 @@
                         Genre
                     </p>
                     <p class="mt-1 text-[#16213A]">
-                        {{ $book->genre->name ?? '-' }}
+                        @if ($book->genres->count())
+                    <div>
+                        <p class="text-xs uppercase tracking-wider text-gray-400">
+                            Genre
+                        </p>
+
+                        <p class="mt-1 text-sm text-[#16213A]">
+                            {{ $book->genres->pluck('name')->join(', ') }}
+                        </p>
+                    </div>
+                    @endif
                     </p>
                 </div>
 
@@ -79,7 +99,17 @@
                         Category
                     </p>
                     <p class="mt-1 text-[#16213A]">
-                        {{ $book->category->name ?? '-' }}
+                        @if ($book->categories->count())
+                    <div>
+                        <p class="text-xs uppercase tracking-wider text-gray-400">
+                            Kategori
+                        </p>
+
+                        <p class="mt-1 text-sm text-[#16213A]">
+                            {{ $book->categories->pluck('name')->join(', ') }}
+                        </p>
+                    </div>
+                    @endif
                     </p>
                 </div>
 
@@ -89,7 +119,17 @@
                         Tipe Buku
                     </p>
                     <p class="mt-1 text-[#16213A]">
-                        {{ $book->bookType->name ?? '-' }}
+                        @if ($book->bookTypes->count())
+                    <div>
+                        <p class="text-xs uppercase tracking-wider text-gray-400">
+                            Tipe Buku
+                        </p>
+
+                        <p class="mt-1 text-sm text-[#16213A]">
+                            {{ $book->bookTypes->pluck('name')->join(', ') }}
+                        </p>
+                    </div>
+                    @endif
                     </p>
                 </div>
 

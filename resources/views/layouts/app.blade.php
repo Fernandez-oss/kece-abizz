@@ -10,11 +10,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-[#F7F6F2] text-slate-700">
+<body class="bg-[#FFF2E0] text-slate-700">
 
     <div class="flex min-h-screen">
 
-        {{-- Sidebar --}}
+        {{-- Sidebar / Header --}}
         @include('layouts.partials.header')
 
         {{-- Area Sebelah Kanan --}}

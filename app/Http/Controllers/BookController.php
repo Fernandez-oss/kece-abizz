@@ -16,10 +16,10 @@ class BookController extends Controller
     {
         $books = Book::with([
             'author',
-            'publisher',
-            'genre',
-            'category',
-            'bookType'
+            'publishers',
+            'genres',
+            'categories',
+            'bookTypes'
         ])->get();
 
         return view('books.index', compact('books'));
@@ -29,10 +29,10 @@ class BookController extends Controller
     {
         $book = Book::with([
             'author',
-            'publisher',
-            'genre',
-            'category',
-            'bookType'
+            'publishers',
+            'genres',
+            'categories',
+            'bookTypes'
         ])->findOrFail($id);
 
         return view('books.show', compact('book'));
@@ -51,7 +51,12 @@ class BookController extends Controller
 
     public function edit($id)
     {
-        $book = Book::findOrFail($id);
+        $book = Book::with([
+            'publishers',
+            'genres',
+            'categories',
+            'bookTypes'
+        ])->findOrFail($id);
 
         $authors = Author::all();
         $publishers = Publisher::all();
@@ -74,10 +79,19 @@ class BookController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'author_id' => 'required|exists:authors,id',
-            'publisher_id' => 'required|exists:publishers,id',
-            'genre_id' => 'required|exists:genres,id',
-            'category_id' => 'required|exists:categories,id',
-            'book_type_id' => 'required|exists:book_types,id',
+
+            'publisher_ids' => 'required|array|min:1',
+            'publisher_ids.*' => 'exists:publishers,id',
+
+            'genre_ids' => 'required|array|min:1',
+            'genre_ids.*' => 'exists:genres,id',
+
+            'category_ids' => 'required|array|min:1',
+            'category_ids.*' => 'exists:categories,id',
+
+            'book_type_ids' => 'required|array|min:1',
+            'book_type_ids.*' => 'exists:book_types,id',
+
             'cover_image' => 'required|image|mimes:jpg,jpeg,png,webp,jfif|max:2048',
             'year' => 'required|integer',
             'stock' => 'required|integer|min:0',
@@ -85,23 +99,22 @@ class BookController extends Controller
         ]);
 
         $file = $request->file('cover_image');
-
         $filename = time() . '_' . $file->getClientOriginalName();
-
         $file->move(public_path('cover_images'), $filename);
 
-        Book::create([
+        $book = Book::create([
             'name' => $request->name,
             'author_id' => $request->author_id,
-            'publisher_id' => $request->publisher_id,
-            'genre_id' => $request->genre_id,
-            'category_id' => $request->category_id,
-            'book_type_id' => $request->book_type_id,
             'cover_image' => $filename,
             'year' => $request->year,
             'stock' => $request->stock,
             'description' => $request->description,
         ]);
+
+        $book->publishers()->sync($request->publisher_ids);
+        $book->genres()->sync($request->genre_ids);
+        $book->categories()->sync($request->category_ids);
+        $book->bookTypes()->sync($request->book_type_ids);
 
         return redirect()
             ->route('books.index')

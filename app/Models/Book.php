@@ -9,16 +9,11 @@ use App\Models\Category;
 use App\Models\BookType;
 use App\Models\Publisher;
 
-
 class Book extends Model
 {
     protected $fillable = [
         'name',
         'author_id',
-        'publisher_id',
-        'genre_id',
-        'category_id',
-        'book_type_id',
         'cover_image',
         'year',
         'stock',
@@ -30,23 +25,23 @@ class Book extends Model
         return $this->belongsTo(Author::class);
     }
 
-    public function publisher()
+    public function publishers()
     {
-        return $this->belongsTo(Publisher::class);
+        return $this->belongsToMany(Publisher::class);
     }
 
-    public function genre()
+    public function genres()
     {
-        return $this->belongsTo(Genre::class);
+        return $this->belongsToMany(Genre::class);
     }
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class);
     }
 
-    public function bookType()
+    public function bookTypes()
     {
-        return $this->belongsTo(BookType::class);
+        return $this->belongsToMany(BookType::class);
     }
 }

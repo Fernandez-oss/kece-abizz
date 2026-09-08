@@ -1,12 +1,8 @@
 @if (auth()->check() && auth()->user()->role === 'admin')
 
-{{-- HEADER ADMIN --}}
-<div class="min-h-screen bg-slate-50 flex">
-
-    <header class="flex w-64 flex-col border-r border-[#6688a5] bg-[#7A9BB8] px-4 py-6 text-white shadow-xl min-h-screen">
-
+    {{-- HEADER ADMIN --}}
+    <aside class="sticky top-0 h-screen w-64 shrink-0 overflow-y-auto border-r border-[#6688a5] bg-[#7A9BB8] px-4 py-6 text-white shadow-xl">
         <div>
-
             <a href="{{ route('admins.index') }}" class="mb-4 flex items-center gap-4">
                 <p class="flex h-14 w-14 items-center justify-center border border-white text-xl">
                     p
@@ -17,125 +13,79 @@
                 </span>
             </a>
 
-            <nav
-                class="mx-auto w-36 h-110 border border-white/10 flex flex-col gap-3 p-3"
-                aria-label="Navigasi admin">
-
-                <a
-                    href="{{ route('admins.index') }}"
-                    class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
+            <nav class="mx-auto flex h-110 w-36 flex-col gap-3 border border-white/10 p-3" aria-label="Navigasi admin">
+                <a href="{{ route('admins.index') }}" class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
                     Users
                 </a>
 
-                <a
-                    href="{{ route('books.index') }}"
-                    class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
+                <a href="{{ route('books.index') }}" class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
                     Books
                 </a>
 
-                <a
-                    href="{{ route('authors.index') }}"
-                    class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
+                <a href="{{ route('authors.index') }}" class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
                     Authors
                 </a>
 
-                <a
-                    href="{{ route('genres.index') }}"
-                    class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
+                <a href="{{ route('genres.index') }}" class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
                     Genres
                 </a>
 
-                <a
-                    href="{{ route('categories.index') }}"
-                    class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
+                <a href="{{ route('categories.index') }}" class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
                     Categories
                 </a>
 
-                <a
-                    href="{{ route('book_types.index') }}"
-                    class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
+                <a href="{{ route('book_types.index') }}" class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
                     Book Types
                 </a>
 
-                <a
-                    href="{{ route('publishers.index') }}"
-                    class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
+                <a href="{{ route('publishers.index') }}" class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
                     Publishers
                 </a>
 
-                <a
-                    href="{{ route('borrowings.index') }}"
-                    class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
+                <a href="{{ route('borrowings.index') }}" class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
                     Peminjaman
                 </a>
-
             </nav>
-
         </div>
-
-    </header>
-
-</div>
+    </aside>
 
 @else
 
-{{-- HEADER USER --}}
-<div class="min-h-screen bg-slate-50 flex">
-
-    <header class="flex w-64 flex-col border-r border-[#6688a5] bg-[#7A9BB8] px-4 py-6 text-white shadow-xl min-h-screen">
-
+    {{-- HEADER USER --}}
+    <aside class="sticky top-0 h-screen w-64 shrink-0 overflow-y-auto border-r border-[#7E97A6] bg-[#93ABBB] px-4 py-6 text-white shadow-xl">
         <div>
-
-            <a href="{{ route('admins.index') }}" class="mb-4 flex items-center gap-4">
+            <a href="{{ route('users.index') }}" class="mb-4 flex items-center gap-4">
                 <p class="flex h-14 w-14 items-center justify-center border border-white text-xl">
                     p
                 </p>
 
-                <span class="block text-[20px] uppercase tracking-[0.2em] text-white/80">
+                <span class="block text-[20px] uppercase tracking-[0.2em] text-[#352D2A]">
                     OwlPost
                 </span>
             </a>
 
-            <nav
-                class="mx-auto w-36 h-110 border border-white/10 flex flex-col gap-3 p-3"
-                aria-label="Navigasi user">
-
-                <a
-                    href="{{ route('users.index') }}"
-                    class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
+            <nav class="mx-auto flex h-110 w-36 flex-col gap-3 rounded-[5px] border border-white/10 bg-[#7E97A6] p-3" aria-label="Navigasi user">
+                <a href="{{ route('users.index') }}" class="rounded-md px-3 py-3 text-center text-xs font-medium text-[#352D2A] transition hover:bg-[#003565]/60 hover:text-white">
                     Home
                 </a>
 
-                <a
-                    href=""
-                    class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
+                <a href="" class="rounded-md px-3 py-3 text-center text-xs font-medium text-[#352D2A] transition hover:bg-[#003565]/60 hover:text-white">
                     Search
                 </a>
 
-                <a
-                    href=""
-                    class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
+                <a href="" class="rounded-md px-3 py-3 text-center text-xs font-medium text-[#352D2A] transition hover:bg-[#003565]/60 hover:text-white">
                     Category
                 </a>
 
-                <a
-                    href="{{ route('cart.index') }}"
-                    class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
+                <a href="{{ route('cart.index') }}" class="rounded-md px-3 py-3 text-center text-xs font-medium text-[#352D2A] transition hover:bg-[#003565]/60 hover:text-white">
                     Keranjang
                 </a>
 
-                <a
-                    href="{{ route('borrowings.user.index') }}"
-                    class="rounded-md px-3 py-3 text-center text-xs font-medium text-white/75 transition hover:bg-white/15 hover:text-white">
+                <a href="{{ route('borrowings.user.index') }}" class="rounded-md px-3 py-3 text-center text-xs font-medium text-[#352D2A] transition hover:bg-[#003565]/60 hover:text-white">
                     History
                 </a>
-
             </nav>
-
         </div>
-
-    </header>
-
-</div>
+    </aside>
 
 @endif

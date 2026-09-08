@@ -14,11 +14,12 @@ class UserController extends Controller
 
         $books = Book::with([
             'author',
-            'genre',
-            'category',
-            'bookType'
+            'publishers',
+            'genres',
+            'categories',
+            'bookTypes'
         ])->get();
-
+        
         return view('users.index', [
             'title' => $title,
             'books' => $books
@@ -31,9 +32,10 @@ class UserController extends Controller
 
         $book = Book::with([
             'author',
-            'genre',
-            'category',
-            'bookType'
+            'publishers',
+            'genres',
+            'categories',
+            'bookTypes'
         ])->findOrFail($id);
 
         return view('users.show', [
