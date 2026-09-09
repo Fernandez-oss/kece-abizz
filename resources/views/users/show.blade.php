@@ -8,32 +8,82 @@
     <a
         href="{{ route('users.index') }}"
         class="text-sm font-medium text-[#16213A] hover:text-[#A16207]">
-        ← Kembali ke Daftar Buku
+        ← Back to Books
     </a>
 </div>
 
 
-<div class="border border-[#E5E3DB] bg-white">
+{{-- BOOK DETAIL CARD --}}
+<div class="rounded-[15px] border border-[#C1C5C2] bg-[#C1C5C2]">
 
-    <div class="grid grid-cols-1 gap-8 p-6 md:grid-cols-3">
+    <div class="p-8">
 
-        {{-- COVER --}}
-        <div class="md:col-span-1">
+        {{-- BAGIAN COVER + INFORMASI --}}
+        <div class="grid grid-cols-[140px_1fr] gap-6">
 
-            <div class="aspect-[3/4] bg-[#F7F6F1]">
+            {{-- COVER --}}
+            <div>
+                <div class="h-[194px] w-[132px] bg-[#F7F6F1]">
 
-                @if ($book->cover_image)
+                    @if ($book->cover_image)
 
-                <img
-                    src="{{ asset('cover_images/' . $book->cover_image) }}"
-                    alt="Cover {{ $book->name }}"
-                    class="h-full w-full object-cover">
+                        <img
+                            src="{{ asset('cover_images/' . $book->cover_image) }}"
+                            alt="Cover {{ $book->name }}"
+                            class="h-full w-full object-cover"
+                        >
 
-                @else
+                    @else
 
-                <div class="flex h-full items-center justify-center text-sm text-gray-400">
-                    Tidak ada cover
+                        <div class="flex h-full items-center justify-center text-center text-xs text-gray-400">
+                            Tidak ada cover
+                        </div>
+
+                    @endif
+
                 </div>
+            </div>
+
+
+            {{-- INFORMASI BUKU --}}
+            <div>
+
+                {{-- JUDUL --}}
+                <h1 class="font-serif text-[18px] leading-tight text-[#222]">
+                    {{ $book->name }}
+                </h1>
+
+
+                {{-- PENULIS --}}
+                @if ($book->author)
+
+                    <p class="mt-1 font-serif text-[14px] text-[#222]">
+                        {{ $book->author->name }}
+                    </p>
+
+                @endif
+
+
+                {{-- RATING --}}
+                <div class="mt-3 flex items-center gap-2">
+
+                    <span class="text-[20px] text-black">
+                        ★
+                    </span>
+
+                    <span class="font-serif text-[13px] text-[#222]">
+                        4.29
+                    </span>
+
+                </div>
+
+
+                {{-- DESKRIPSI --}}
+                @if ($book->description)
+
+                    <p class="mt-3 font-serif text-[9px] leading-[1.45] text-[#222]">
+                        {{ $book->description }}
+                    </p>
 
                 @endif
 
@@ -42,181 +92,145 @@
         </div>
 
 
-        {{-- INFORMASI BUKU --}}
-        <div class="md:col-span-2">
+        {{-- INFORMASI TAMBAHAN --}}
+        <div class="mt-4 ml-[10px] font-serif text-[12px] text-[#222]">
 
-            <p class="mb-2 text-[11px] uppercase tracking-[0.2em] text-[#A16207]">
-                Detail Buku
-            </p>
+            {{-- GENRE --}}
+            @if ($book->genre)
 
-            <h1 class="font-display text-3xl font-semibold text-[#16213A]">
-                {{ $book->name }}
-            </h1>
+                <div class="mb-2 grid grid-cols-[66px_1fr]">
 
-
-            {{-- DATA BUKU --}}
-            <div class="mt-6 grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-2">
-
-                {{-- PENULIS --}}
-                @if ($book->author)
-
-                <div>
-                    <p class="text-xs uppercase tracking-wider text-gray-400">
-                        Penulis
-                    </p>
-
-                    <p class="mt-1 text-sm text-[#16213A]">
-                        {{ $book->author->name }}
-                    </p>
-                </div>
-
-                @endif
-
-
-                {{-- PUBLISHER --}}
-                @if ($book->publisher)
-
-                <div>
-                    <p class="text-xs uppercase tracking-wider text-gray-400">
-                        Publisher
-                    </p>
-
-                    <p class="mt-1 text-sm text-[#16213A]">
-                        {{ $book->publisher->name }}
-                    </p>
-                </div>
-
-                @endif
-
-
-                {{-- GENRE --}}
-                @if ($book->genre)
-
-                <div>
-                    <p class="text-xs uppercase tracking-wider text-gray-400">
+                    <span>
                         Genre
-                    </p>
+                    </span>
 
-                    <p class="mt-1 text-sm text-[#16213A]">
+                    <span>
                         {{ $book->genre->name }}
-                    </p>
+
+                        @if ($book->category)
+                            | {{ $book->category->name }}
+                        @endif
+                    </span>
+
                 </div>
-
-                @endif
-
-
-                {{-- KATEGORI --}}
-                @if ($book->category)
-
-                <div>
-                    <p class="text-xs uppercase tracking-wider text-gray-400">
-                        Kategori
-                    </p>
-
-                    <p class="mt-1 text-sm text-[#16213A]">
-                        {{ $book->category->name }}
-                    </p>
-                </div>
-
-                @endif
-
-
-                {{-- TIPE BUKU --}}
-                @if ($book->bookType)
-
-                <div>
-                    <p class="text-xs uppercase tracking-wider text-gray-400">
-                        Tipe Buku
-                    </p>
-
-                    <p class="mt-1 text-sm text-[#16213A]">
-                        {{ $book->bookType->name }}
-                    </p>
-                </div>
-
-                @endif
-
-
-                {{-- TAHUN --}}
-                @if ($book->year)
-
-                <div>
-                    <p class="text-xs uppercase tracking-wider text-gray-400">
-                        Tahun Terbit
-                    </p>
-
-                    <p class="mt-1 text-sm text-[#16213A]">
-                        {{ $book->year }}
-                    </p>
-                </div>
-
-                @endif
-
-
-                {{-- STOK --}}
-                <div>
-                    <p class="text-xs uppercase tracking-wider text-gray-400">
-                        Stok
-                    </p>
-
-                    <p class="mt-1 text-sm text-[#16213A]">
-                        {{ $book->stock }} buku tersedia
-                    </p>
-                </div>
-
-            </div>
-
-
-            {{-- DESKRIPSI --}}
-            @if ($book->description)
-
-            <div class="mt-8 border-t border-[#EFEDE6] pt-6">
-
-                <p class="text-xs uppercase tracking-wider text-gray-400">
-                    Deskripsi
-                </p>
-
-                <p class="mt-2 whitespace-pre-line text-sm leading-7 text-gray-600">
-                    {{ $book->description }}
-                </p>
-
-            </div>
 
             @endif
 
 
-            {{-- PESAN BUKU --}}
-            <div class="mt-8">
+            {{-- PUBLISHER --}}
+            @if ($book->publisher)
 
-                @if ($book->stock > 0)
+                <div class="mb-2 grid grid-cols-[66px_1fr]">
 
-                <form action="{{ route('cart.store') }}" method="POST">
+                    <span>
+                        Publisher
+                    </span>
+
+                    <span>
+                        {{ $book->publisher->name }}
+                    </span>
+
+                </div>
+
+            @endif
+
+
+            {{-- TAHUN --}}
+            @if ($book->year)
+
+                <div class="mb-2 grid grid-cols-[66px_1fr]">
+
+                    <span>
+                        Published
+                    </span>
+
+                    <span>
+                        {{ $book->year }}
+                    </span>
+
+                </div>
+
+            @endif
+
+
+            {{-- TIPE BUKU --}}
+            @if ($book->bookType)
+
+                <div class="mb-2 grid grid-cols-[66px_1fr]">
+
+                    <span>
+                        Tipe
+                    </span>
+
+                    <span>
+                        {{ $book->bookType->name }}
+                    </span>
+
+                </div>
+
+            @endif
+
+
+            {{-- STOK --}}
+            <div class="grid grid-cols-[66px_1fr]">
+
+                <span>
+                    Stok
+                </span>
+
+                <span>
+                    {{ $book->stock }} buku tersedia
+                </span>
+
+            </div>
+
+        </div>
+
+
+        {{-- BORROW AREA --}}
+        <div class="mt-5 rounded-[10px] bg-[#6F8FA6] px-5 py-3 text-center">
+
+            <p class="font-serif text-[16px] text-[#111]">
+                Available at OwlPost Library
+            </p>
+
+
+            @if ($book->stock > 0)
+
+                <form
+                    action="{{ route('cart.store') }}"
+                    method="POST"
+                    class="mt-2"
+                >
+
                     @csrf
 
                     <input
                         type="hidden"
                         name="book_id"
-                        value="{{ $book->id }}">
+                        value="{{ $book->id }}"
+                    >
 
                     <button
                         type="submit"
-                        class="bg-[#16213A] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#26324f]">
-                        Tambah ke Keranjang
+                        class="w-[205px] rounded-[10px] bg-[#E8E8E8] px-5 py-2 font-serif text-[14px] text-[#222] transition hover:bg-white"
+                    >
+                        Borrow this book
                     </button>
+
                 </form>
 
-                @else
+            @else
 
                 <button
                     type="button"
                     disabled
-                    class="cursor-not-allowed bg-gray-300 px-6 py-3 text-sm font-medium text-gray-500">
+                    class="mt-2 w-[205px] cursor-not-allowed rounded-[10px] bg-gray-300 px-5 py-2 font-serif text-[14px] text-gray-500"
+                >
                     Stok Habis
                 </button>
 
-                @endif
-
-            </div>
+            @endif
 
         </div>
 
