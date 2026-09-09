@@ -29,27 +29,42 @@
 
 @else
 
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div class="rounded-[15px] bg-[#C1C5C2] px-5 py-3">
+
+    {{-- JUDUL SECTION --}}
+    <div class="mb-2 flex items-center gap-1">
+        <span class="text-[14px]">🔥</span>
+
+        <h2 class="font-serif text-[13px] text-[#222]">
+            Most Borrowed
+        </h2>
+    </div>
+
+
+    {{-- DAFTAR BUKU --}}
+    <div class="flex gap-10">
 
         @foreach ($books as $book)
 
             <a
                 href="{{ route('users.show', ['id' => $book->id]) }}"
-                class="group overflow-hidden border border-[#E5E3DB] bg-white transition hover:-translate-y-1 hover:shadow-md">
+                class="group min-w-0"
+            >
 
                 {{-- COVER --}}
-                <div class="h-64 bg-[#F7F6F1]">
+                <div class="h-[115px] w-[76px] bg-[#F7F6F1]">
 
                     @if ($book->cover_image)
 
                         <img
                             src="{{ asset('cover_images/' . $book->cover_image) }}"
                             alt="Cover {{ $book->name }}"
-                            class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+                            class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                        >
 
                     @else
 
-                        <div class="flex h-full items-center justify-center text-sm text-gray-400">
+                        <div class="flex h-full w-full items-center justify-center text-center text-[8px] text-gray-400">
                             Tidak ada cover
                         </div>
 
@@ -59,26 +74,21 @@
 
 
                 {{-- DATA BUKU --}}
-                <div class="p-5">
+                <div class="mt-1 w-[76px]">
 
-                    <p class="mb-1 text-[10px] uppercase tracking-[0.15em] text-[#A16207]">
-                        Buku
-                    </p>
-
-                    <h2 class="line-clamp-2 text-lg font-semibold text-[#16213A]">
+                    {{-- JUDUL --}}
+                    <h3 class="line-clamp-2 font-serif text-[9px] leading-[1.25] text-[#222]">
                         {{ $book->name }}
-                    </h2>
+                    </h3>
 
+
+                    {{-- AUTHOR --}}
                     @if ($book->author)
-                        <p class="mt-2 text-sm text-gray-500">
+
+                        <p class="mt-[2px] line-clamp-2 font-serif text-[7px] leading-[1.2] text-[#777]">
                             {{ $book->author->name }}
                         </p>
-                    @endif
 
-                    @if ($book->description)
-                        <p class="mt-3 line-clamp-3 text-sm leading-6 text-gray-600">
-                            {{ $book->description }}
-                        </p>
                     @endif
 
                 </div>
@@ -89,6 +99,7 @@
 
     </div>
 
+</div>
 @endif
 
 @endsection
