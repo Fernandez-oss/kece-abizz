@@ -3,14 +3,9 @@
     {{-- HEADER ADMIN --}}
     <aside class="sticky top-0 h-screen w-64 shrink-0 overflow-y-auto border-r border-[#6688a5] bg-[#7A9BB8] px-4 py-6 text-white shadow-xl">
         <div>
-            <a href="{{ route('admins.index') }}" class="mb-4 flex items-center gap-4">
-                <p class="flex h-14 w-14 items-center justify-center border border-white text-xl">
-                    p
-                </p>
-
-                <span class="block text-[20px] uppercase tracking-[0.2em] text-white/80">
-                    OwlPost
-                </span>
+            {{-- LOGO CENTER & DIPERBESAR --}}
+            <a href="{{ route('admins.index') }}" class="mb-6 flex justify-center">
+                <img src="{{ asset('images/owl.png') }}" alt="OwlPost Logo" class="h-16 w-auto object-contain">
             </a>
 
             <nav class="mx-auto flex h-110 w-36 flex-col gap-3 border border-white/10 p-3" aria-label="Navigasi admin">
@@ -54,14 +49,9 @@
     {{-- HEADER USER --}}
     <aside class="sticky top-0 h-screen w-64 shrink-0 overflow-y-auto border-r border-[#7E97A6] bg-[#93ABBB] px-4 py-6 text-white shadow-xl">
         <div>
-            <a href="{{ route('users.index') }}" class="mb-4 flex items-center gap-4">
-                <p class="flex h-14 w-14 items-center justify-center border border-white text-xl">
-                    p
-                </p>
-
-                <span class="block text-[20px] uppercase tracking-[0.2em] text-[#352D2A]">
-                    OwlPost
-                </span>
+            {{-- LOGO CENTER & DIPERBESAR --}}
+            <a href="{{ route('users.index') }}" class="mb-6 flex justify-center">
+                <img src="{{ asset('images/owl.png') }}" alt="OwlPost Logo" class="h-16 w-auto object-contain">
             </a>
 
             <nav class="mx-auto flex h-110 w-36 flex-col gap-3 rounded-[5px] border border-white/10 bg-[#7E97A6] p-3" aria-label="Navigasi user">
