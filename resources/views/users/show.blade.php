@@ -31,7 +31,7 @@
                         class="h-full w-full object-cover"
                     >
                 @else
-                    <div class="flex h-full items-center justify-center text-center text-xs text-gray-400 p-2">
+                    <div class="flex h-full items-center justify-center p-2 text-center text-xs text-gray-400">
                         Tidak ada cover
                     </div>
                 @endif
@@ -108,30 +108,36 @@
     </div>
 
     {{-- BORROW AREA CONTAINER --}}
-    <div class="mt-8 rounded-[12px] bg-[#6F8FA6] py-6 text-center shadow-inner">
+    <div class="mt-8 flex flex-col items-center justify-center rounded-[12px] bg-[#6F8FA6] py-6 text-center shadow-inner">
         <p class="font-serif text-lg font-semibold text-[#111]">
             Available at OwlPost Library
         </p>
 
         @if ($book->stock > 0)
-            <form action="{{ route('cart.store') }}" method="POST" class="mt-3">
+            <form action="{{ route('cart.store') }}" method="POST" class="mt-3 w-full flex justify-center">
                 @csrf
                 <input type="hidden" name="book_id" value="{{ $book->id }}">
+                
                 <button
                     type="submit"
-                    class="w-[260px] rounded-full bg-[#E8E8E8] py-2.5 font-serif text-sm font-medium text-[#222] shadow transition hover:bg-white active:scale-95"
+                    class="inline-flex w-[280px] items-center justify-center gap-2 rounded-full bg-[#003565] py-3 font-serif text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-[#002548] hover:shadow-lg active:scale-95"
                 >
-                    Borrow this book
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                    <span>Borrow this book</span>
                 </button>
             </form>
         @else
-            <button
-                type="button"
-                disabled
-                class="mt-3 w-[260px] cursor-not-allowed rounded-full bg-gray-300 py-2.5 font-serif text-sm font-medium text-gray-500"
-            >
-                Stok Habis
-            </button>
+            <div class="mt-3">
+                <button
+                    type="button"
+                    disabled
+                    class="w-[280px] cursor-not-allowed rounded-full bg-gray-400/60 py-3 font-serif text-sm font-semibold text-white shadow-none"
+                >
+                    Stok Habis
+                </button>
+            </div>
         @endif
     </div>
 
@@ -146,7 +152,7 @@
                 @foreach ($relatedBooks as $related)
                     <a
                         href="{{ route('users.show', ['id' => $related->id]) }}"
-                        class="group flex flex-col items-start w-[160px]"
+                        class="group flex w-[160px] flex-col items-start"
                     >
                         {{-- Cover & Container Disamakan 160px x 235px --}}
                         <div class="h-[235px] w-[160px] overflow-hidden rounded-sm bg-[#F7F6F1] shadow-md">
@@ -157,7 +163,7 @@
                                     class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                                 >
                             @else
-                                <div class="flex h-full w-full items-center justify-center text-center text-xs text-gray-400 p-2">
+                                <div class="flex h-full w-full items-center justify-center p-2 text-center text-xs text-gray-400">
                                     Tidak ada cover
                                 </div>
                             @endif

@@ -6,15 +6,24 @@ use App\Models\Book;
 use App\Models\Borrowing;
 use App\Models\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserBorrowingController extends Controller
 {
+    // Alias untuk memproses request checkout dari form cart (Route: borrowings.store)
+    public function store(Request $request)
+    {
+        return $this->checkout($request);
+    }
+
     public function checkout(Request $request)
     {
+        // Validasi input tanggal pickup dan durasi dari cart
         $request->validate([
-            'days' => 'required|integer|min:1|max:14',
+            'pickup_date' => 'nullable|date',
+            'days'        => 'nullable|integer|min:1|max:14',
         ]);
 
         $carts = Cart::with('book')
@@ -34,17 +43,18 @@ class UserBorrowingController extends Controller
             }
         }
 
-        DB::transaction(function () use ($carts, $request) {
+        $pickupDate = $request->pickup_date ? Carbon::parse($request->pickup_date) : now();
+        $loanDays   = $request->days ?? 7;
 
+        DB::transaction(function () use ($carts, $pickupDate, $loanDays) {
             foreach ($carts as $cart) {
-
                 Borrowing::create([
-                    'user_id' => Auth::id(),
-                    'book_id' => $cart->book_id,
-                    'borrowed_at' => now(),
-                    'due_date' => now()->addDays((int) $request->days),
+                    'user_id'     => Auth::id(),
+                    'book_id'     => $cart->book_id,
+                    'borrowed_at' => $pickupDate,
+                    'due_date'    => $pickupDate->copy()->addDays((int) $loanDays),
                     'returned_at' => null,
-                    'status' => 'borrowed',
+                    'status'      => 'borrowed',
                 ]);
 
                 $cart->book->decrement('stock');
@@ -53,11 +63,13 @@ class UserBorrowingController extends Controller
             Cart::where('user_id', Auth::id())->delete();
         });
 
+        // Redirect ke route borrowings.user.index
         return redirect()
             ->route('borrowings.user.index')
             ->with('success', 'Semua buku berhasil dipinjam.');
     }
 
+    // Menampilkan halaman history (resources/views/users/history.blade.php)
     public function index()
     {
         $borrowings = Borrowing::with('book')
@@ -65,8 +77,8 @@ class UserBorrowingController extends Controller
             ->latest()
             ->get();
 
-        return view('users.borrowings', [
-            'title' => 'Riwayat Peminjaman',
+        return view('users.history', [
+            'title'      => 'Riwayat Peminjaman',
             'borrowings' => $borrowings,
         ]);
     }
@@ -84,7 +96,7 @@ class UserBorrowingController extends Controller
         }
 
         $borrowing->update([
-            'status' => 'return_requested',
+            'status'      => 'return_requested',
             'returned_at' => now(),
         ]);
 
