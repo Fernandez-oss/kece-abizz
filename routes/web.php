@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 // ==================================================
 
 Route::get('/', function () {
-    return view('Register');
+    return view('welcome');
 });
 
 
