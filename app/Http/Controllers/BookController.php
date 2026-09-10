@@ -2,194 +2,136 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Book;
-use App\Models\Author;
-use App\Models\Genre;
-use App\Models\Category;
-use App\Models\BookType;
-use App\Models\Publisher;
+use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
+    /**
+     * Menampilkan Tampilan Homepage User
+     */
+    public function userIndex()
+    {
+        $books = Book::with(['author', 'category'])->latest()->take(8)->get();
+        return view('users.index', compact('books'));
+    }
+
+    /**
+     * Menampilkan Halaman Pencarian Buku (Search Page)
+     */
+    public function search(Request $request)
+    {
+        // Menerima input search baik menggunakan parameter 'q' maupun 'query'
+        $query = $request->input('q') ?? $request->input('query');
+
+        $books = Book::with(['author', 'category', 'genres'])
+            ->when($query, function ($q) use ($query) {
+                return $q->where('name', 'LIKE', "%{$query}%")
+                    ->orWhereHas('author', function ($authorQuery) use ($query) {
+                        $authorQuery->where('name', 'LIKE', "%{$query}%");
+                    })
+                    ->orWhereHas('category', function ($categoryQuery) use ($query) {
+                        $categoryQuery->where('name', 'LIKE', "%{$query}%");
+                    });
+            })
+            ->paginate(12);
+
+        return view('users.search', compact('books', 'query'));
+    }
+
+    /**
+     * Menampilkan Daftar Buku untuk Admin (CRUD Index)
+     */
     public function index()
     {
-        $books = Book::with([
-            'author',
-            'publishers',
-            'genres',
-            'categories',
-            'bookTypes'
-        ])->get();
-
+        $books = Book::with(['author', 'category'])->latest()->paginate(10);
         return view('books.index', compact('books'));
     }
 
-    public function show($id)
-    {
-        $book = Book::with([
-            'author',
-            'publishers',
-            'genres',
-            'categories',
-            'bookTypes'
-        ])->findOrFail($id);
-
-        return view('books.show', compact('book'));
-    }
-
+    /**
+     * Form Tambah Buku Baru (Admin)
+     */
     public function create()
     {
-        return view('books.create', [
-            'authors' => Author::all(),
-            'publishers' => Publisher::all(),
-            'genres' => Genre::all(),
-            'categories' => Category::all(),
-            'bookTypes' => BookType::all(),
-        ]);
+        return view('books.create');
     }
 
-    public function edit($id)
-    {
-        $book = Book::with([
-            'publishers',
-            'genres',
-            'categories',
-            'bookTypes'
-        ])->findOrFail($id);
-
-        $authors = Author::all();
-        $publishers = Publisher::all();
-        $genres = Genre::all();
-        $categories = Category::all();
-        $bookTypes = BookType::all();
-
-        return view('books.edit', compact(
-            'book',
-            'authors',
-            'publishers',
-            'genres',
-            'categories',
-            'bookTypes'
-        ));
-    }
-
+    /**
+     * Menyimpan Buku Baru ke Database (Admin)
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'author_id' => 'required|exists:authors,id',
-
-            'publisher_ids' => 'required|array|min:1',
-            'publisher_ids.*' => 'exists:publishers,id',
-
-            'genre_ids' => 'required|array|min:1',
-            'genre_ids.*' => 'exists:genres,id',
-
-            'category_ids' => 'required|array|min:1',
-            'category_ids.*' => 'exists:categories,id',
-
-            'book_type_ids' => 'required|array|min:1',
-            'book_type_ids.*' => 'exists:book_types,id',
-
-            'cover_image' => 'required|image|mimes:jpg,jpeg,png,webp,jfif|max:2048',
-            'year' => 'required|integer',
-            'stock' => 'required|integer|min:0',
-            'description' => 'required|string',
+        $validated = $request->validate([
+            'name'         => 'required|string|max:255',
+            'author_id'    => 'nullable|exists:authors,id',
+            'category_id'  => 'nullable|exists:categories,id',
+            'description'  => 'nullable|string',
+            'cover_image'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $file = $request->file('cover_image');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('cover_images'), $filename);
+        if ($request->hasFile('cover_image')) {
+            $imageName = time() . '.' . $request->cover_image->extension();
+            $request->cover_image->move(public_path('cover_images'), $imageName);
+            $validated['cover_image'] = $imageName;
+        }
 
-        $book = Book::create([
-            'name' => $request->name,
-            'author_id' => $request->author_id,
-            'cover_image' => $filename,
-            'year' => $request->year,
-            'stock' => $request->stock,
-            'description' => $request->description,
-        ]);
+        Book::create($validated);
 
-        $book->publishers()->sync($request->publisher_ids);
-        $book->genres()->sync($request->genre_ids);
-        $book->categories()->sync($request->category_ids);
-        $book->bookTypes()->sync($request->book_type_ids);
-
-        return redirect()
-            ->route('books.index')
-            ->with('success', 'Buku berhasil ditambahkan.');
+        return redirect()->route('books.index')->with('success', 'Book created successfully!');
     }
 
+    /**
+     * Menampilkan Detail Buku (User & Admin)
+     */
+    public function show($id)
+    {
+        $book = Book::with(['author', 'category', 'genres', 'publishers', 'bookTypes'])->findOrFail($id);
+        return view('users.show', compact('book'));
+    }
+
+    /**
+     * Form Edit Buku (Admin)
+     */
+    public function edit($id)
+    {
+        $book = Book::findOrFail($id);
+        return view('books.edit', compact('book'));
+    }
+
+    /**
+     * Mengubah Data Buku di Database (Admin)
+     */
     public function update(Request $request, $id)
     {
         $book = Book::findOrFail($id);
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'author_id' => 'required|exists:authors,id',
-            'publisher_id' => 'required|exists:publishers,id',
-            'genre_id' => 'required|exists:genres,id',
-            'category_id' => 'required|exists:categories,id',
-            'book_type_id' => 'required|exists:book_types,id',
-            'cover_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,jfif|max:2048',
-            'year' => 'required|integer',
-            'stock' => 'required|integer|min:0',
-            'description' => 'required|string',
+        $validated = $request->validate([
+            'name'         => 'required|string|max:255',
+            'author_id'    => 'nullable|exists:authors,id',
+            'category_id'  => 'nullable|exists:categories,id',
+            'description'  => 'nullable|string',
+            'cover_image'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $book->name = $request->name;
-        $book->author_id = $request->author_id;
-        $book->publisher_id = $request->publisher_id;
-        $book->genre_id = $request->genre_id;
-        $book->category_id = $request->category_id;
-        $book->book_type_id = $request->book_type_id;
-        $book->year = $request->year;
-        $book->stock = $request->stock;
-        $book->description = $request->description;
-
         if ($request->hasFile('cover_image')) {
-
-            if ($book->cover_image) {
-                $oldPath = public_path('cover_images/' . $book->cover_image);
-
-                if (file_exists($oldPath)) {
-                    unlink($oldPath);
-                }
-            }
-
-            $file = $request->file('cover_image');
-
-            $filename = time() . '_' . $file->getClientOriginalName();
-
-            $file->move(public_path('cover_images'), $filename);
-
-            $book->cover_image = $filename;
+            $imageName = time() . '.' . $request->cover_image->extension();
+            $request->cover_image->move(public_path('cover_images'), $imageName);
+            $validated['cover_image'] = $imageName;
         }
 
-        $book->save();
+        $book->update($validated);
 
-        return redirect()
-            ->route('books.show', $book->id)
-            ->with('success', 'Data buku berhasil diperbarui.');
+        return redirect()->route('books.index')->with('success', 'Book updated successfully!');
     }
 
-    public function destroy(string $id)
+    /**
+     * Menghapus Buku dari Database (Admin)
+     */
+    public function destroy($id)
     {
         $book = Book::findOrFail($id);
-
-        if ($book->cover_image) {
-            $path = public_path('cover_images/' . $book->cover_image);
-
-            if (file_exists($path)) {
-                unlink($path);
-            }
-        }
-
         $book->delete();
 
-        return redirect()
-            ->route('books.index')
-            ->with('success', 'Buku berhasil dihapus.');
+        return redirect()->route('books.index')->with('success', 'Book deleted successfully!');
     }
 }

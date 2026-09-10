@@ -6,11 +6,11 @@
 
 <div class="mb-8 border-b border-[#E5E3DB] pb-5">
     <p class="mb-1 text-[11px] uppercase tracking-[0.2em] text-[#A16207]">
-        Tahun Ajaran 2025/2026
+        Academic Year 2025/2026
     </p>
 
     <h1 class="font-display text-3xl font-semibold text-[#16213A]">
-        Tambah Category
+        Add Category
     </h1>
 </div>
 
@@ -24,7 +24,7 @@
             <label
                 for="name"
                 class="mb-2 block text-sm font-medium text-[#16213A]">
-                Nama Category
+                Category Name
             </label>
 
             <input
@@ -32,7 +32,7 @@
                 name="name"
                 id="name"
                 value="{{ old('name') }}"
-                placeholder="Masukkan nama category"
+                placeholder="Enter category name"
                 class="w-full border border-[#E5E3DB] px-4 py-3 text-sm outline-none transition focus:border-[#A16207]"
                 required
             >
@@ -49,13 +49,13 @@
             <a
                 href="{{ route('categories.index') }}"
                 class="text-sm font-medium text-[#16213A] hover:text-[#A16207]">
-                Kembali
+                Back
             </a>
 
             <button
                 type="submit"
                 class="bg-[#16213A] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#26324f]">
-                Simpan Category
+                Save Category
             </button>
 
         </div>

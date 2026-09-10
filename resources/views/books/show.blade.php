@@ -1,22 +1,22 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Buku')
+@section('title', 'Book Detail')
 
 @section('content')
 
 <div class="mb-8 border-b border-[#E5E3DB] pb-5">
     <p class="mb-1 text-[11px] uppercase tracking-[0.2em] text-[#A16207]">
-        Koleksi Perpustakaan
+        Library Collection
     </p>
 
     <h1 class="font-display text-3xl font-semibold text-[#16213A]">
-        Detail Buku
+        Book Detail
     </h1>
 </div>
 
 <div class="border border-[#E5E3DB] bg-white p-6">
 
-    <div class="flex gap-8">
+    <div class="flex flex-col gap-8 md:flex-row">
 
         {{-- Cover --}}
         <div class="shrink-0">
@@ -27,20 +27,20 @@
                 class="h-80 w-56 border border-[#E5E3DB] object-cover">
             @else
             <div class="flex h-80 w-56 items-center justify-center border border-[#E5E3DB] text-sm text-gray-400">
-                Tidak ada cover
+                No Cover Available
             </div>
             @endif
         </div>
 
-        {{-- Data Buku --}}
+        {{-- Book Information --}}
         <div class="min-w-0 flex-1">
 
-            {{-- Nama Buku --}}
+            {{-- Book Title --}}
             <h2 class="mb-6 text-2xl font-semibold text-[#16213A]">
                 {{ $book->name }}
             </h2>
 
-            {{-- Data 2 Kolom --}}
+            {{-- 2-Column Grid Data --}}
             <div class="grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-2">
 
                 {{-- Author --}}
@@ -48,7 +48,7 @@
                     <p class="text-xs uppercase tracking-wider text-gray-500">
                         Author
                     </p>
-                    <p class="mt-1 text-[#16213A]">
+                    <p class="mt-1 text-sm text-[#16213A]">
                         {{ $book->author->name ?? '-' }}
                     </p>
                 </div>
@@ -58,18 +58,8 @@
                     <p class="text-xs uppercase tracking-wider text-gray-500">
                         Publisher
                     </p>
-                    <p class="mt-1 text-[#16213A]">
-                        @if ($book->publishers->count())
-                    <div>
-                        <p class="text-xs uppercase tracking-wider text-gray-400">
-                            Publisher
-                        </p>
-
-                        <p class="mt-1 text-sm text-[#16213A]">
-                            {{ $book->publishers->pluck('name')->join(', ') }}
-                        </p>
-                    </div>
-                    @endif
+                    <p class="mt-1 text-sm text-[#16213A]">
+                        {{ $book->publishers->count() ? $book->publishers->pluck('name')->join(', ') : '-' }}
                     </p>
                 </div>
 
@@ -78,18 +68,8 @@
                     <p class="text-xs uppercase tracking-wider text-gray-500">
                         Genre
                     </p>
-                    <p class="mt-1 text-[#16213A]">
-                        @if ($book->genres->count())
-                    <div>
-                        <p class="text-xs uppercase tracking-wider text-gray-400">
-                            Genre
-                        </p>
-
-                        <p class="mt-1 text-sm text-[#16213A]">
-                            {{ $book->genres->pluck('name')->join(', ') }}
-                        </p>
-                    </div>
-                    @endif
+                    <p class="mt-1 text-sm text-[#16213A]">
+                        {{ $book->genres->count() ? $book->genres->pluck('name')->join(', ') : '-' }}
                     </p>
                 </div>
 
@@ -98,87 +78,67 @@
                     <p class="text-xs uppercase tracking-wider text-gray-500">
                         Category
                     </p>
-                    <p class="mt-1 text-[#16213A]">
-                        @if ($book->categories->count())
-                    <div>
-                        <p class="text-xs uppercase tracking-wider text-gray-400">
-                            Kategori
-                        </p>
-
-                        <p class="mt-1 text-sm text-[#16213A]">
-                            {{ $book->categories->pluck('name')->join(', ') }}
-                        </p>
-                    </div>
-                    @endif
+                    <p class="mt-1 text-sm text-[#16213A]">
+                        {{ $book->categories->count() ? $book->categories->pluck('name')->join(', ') : '-' }}
                     </p>
                 </div>
 
-                {{-- Tipe Buku --}}
+                {{-- Book Type --}}
                 <div>
                     <p class="text-xs uppercase tracking-wider text-gray-500">
-                        Tipe Buku
+                        Book Type
                     </p>
-                    <p class="mt-1 text-[#16213A]">
-                        @if ($book->bookTypes->count())
-                    <div>
-                        <p class="text-xs uppercase tracking-wider text-gray-400">
-                            Tipe Buku
-                        </p>
-
-                        <p class="mt-1 text-sm text-[#16213A]">
-                            {{ $book->bookTypes->pluck('name')->join(', ') }}
-                        </p>
-                    </div>
-                    @endif
+                    <p class="mt-1 text-sm text-[#16213A]">
+                        {{ $book->bookTypes->count() ? $book->bookTypes->pluck('name')->join(', ') : '-' }}
                     </p>
                 </div>
 
-                {{-- Tahun --}}
+                {{-- Year --}}
                 <div>
                     <p class="text-xs uppercase tracking-wider text-gray-500">
-                        Tahun
+                        Year
                     </p>
-                    <p class="mt-1 text-[#16213A]">
-                        {{ $book->year }}
+                    <p class="mt-1 text-sm text-[#16213A]">
+                        {{ $book->year ?? '-' }}
                     </p>
                 </div>
 
-                {{-- Stok --}}
+                {{-- Stock --}}
                 <div>
                     <p class="text-xs uppercase tracking-wider text-gray-500">
-                        Stok
+                        Stock
                     </p>
-                    <p class="mt-1 text-[#16213A]">
-                        {{ $book->stock }}
+                    <p class="mt-1 text-sm text-[#16213A]">
+                        {{ $book->stock ?? 0 }}
                     </p>
                 </div>
 
-                {{-- Data Diinput --}}
+                {{-- Created At --}}
                 <div>
                     <p class="text-xs uppercase tracking-wider text-gray-500">
-                        Data Diinput
+                        Date Created
                     </p>
-                    <p class="mt-1 text-[#16213A]">
-                        {{ $book->created_at?->format('d M Y, H:i') }}
+                    <p class="mt-1 text-sm text-[#16213A]">
+                        {{ $book->created_at?->format('d M Y, H:i') ?? '-' }}
                     </p>
                 </div>
 
-                {{-- Terakhir Diupdate --}}
+                {{-- Updated At --}}
                 <div>
                     <p class="text-xs uppercase tracking-wider text-gray-500">
-                        Terakhir Diupdate
+                        Last Updated
                     </p>
-                    <p class="mt-1 text-[#16213A]">
-                        {{ $book->updated_at?->format('d M Y, H:i') }}
+                    <p class="mt-1 text-sm text-[#16213A]">
+                        {{ $book->updated_at?->format('d M Y, H:i') ?? '-' }}
                     </p>
                 </div>
 
             </div>
 
-            {{-- Deskripsi --}}
+            {{-- Description --}}
             <div class="mt-6 border-t border-[#E5E3DB] pt-5">
                 <p class="text-xs uppercase tracking-wider text-gray-500">
-                    Deskripsi
+                    Description
                 </p>
 
                 <p class="mt-2 whitespace-pre-line leading-7 text-[#16213A]">
@@ -186,13 +146,13 @@
                 </p>
             </div>
 
-            {{-- Tombol --}}
+            {{-- Action Buttons --}}
             <div class="mt-8 flex flex-wrap gap-3">
 
                 <a
                     href="{{ route('books.index') }}"
                     class="border border-[#16213A] px-5 py-2.5 text-sm font-medium text-[#16213A] transition hover:bg-gray-100">
-                    Kembali
+                    Back
                 </a>
 
                 <a
@@ -204,7 +164,7 @@
                 <form
                     action="{{ route('books.destroy', $book->id) }}"
                     method="POST"
-                    onsubmit="return confirm('Hapus buku ini?')">
+                    onsubmit="return confirm('Are you sure you want to delete this book?')">
 
                     @csrf
                     @method('DELETE')
@@ -212,7 +172,7 @@
                     <button
                         type="submit"
                         class="bg-red-700 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-red-800">
-                        Hapus
+                        Delete
                     </button>
 
                 </form>

@@ -7,8 +7,8 @@
 
 <div class="mb-8 flex items-end justify-between border-b border-[#E5E3DB] pb-5">
     <div>
-        <p class="mb-1 text-[11px] uppercase tracking-[0.2em] text-[#A16207]">Tahun Ajaran 2025/2026</p>
-        <h1 class="font-display text-3xl font-semibold text-[#16213A]">Daftar Pengguna</h1>
+        <p class="mb-1 text-[11px] uppercase tracking-[0.2em] text-[#A16207]">Academic Year 2025/2026</p>
+        <h1 class="font-display text-3xl font-semibold text-[#16213A]">User List</h1>
     </div>
 </div>
 
@@ -17,10 +17,10 @@
         <thead>
             <tr class="border-b border-[#16213A] text-[11px] uppercase tracking-[0.15em] text-[#16213A]">
                 <th class="w-14 px-5 py-3.5 font-semibold">No.</th>
-                <th class="px-5 py-3.5 font-semibold">Foto</th>
-                <th class="px-5 py-3.5 font-semibold">Nama</th>
-                <th class="px-5 py-3.5 font-semibold">Nomor Telepon</th>
-                <th class="px-5 py-3.5 text-right font-semibold">Tindakan</th>
+                <th class="px-5 py-3.5 font-semibold">Photo</th>
+                <th class="px-5 py-3.5 font-semibold">Name</th>
+                <th class="px-5 py-3.5 font-semibold">Phone Number</th>
+                <th class="px-5 py-3.5 text-right font-semibold">Action</th>
             </tr>
         </thead>
 
@@ -32,16 +32,16 @@
                     {{ $loop->iteration }}
                 </td>
 
-                <!-- FOTO PROFIL -->
+                <!-- PROFILE PHOTO -->
                 <td class="px-5 py-4">
                     @if ($user->profile_image)
                     <img
                         src="{{ asset('profile_images/' . $user->profile_image) }}"
-                        alt="Foto {{ $user->name }}"
+                        alt="Photo of {{ $user->name }}"
                         class="w-16 h-16 object-cover border">
                     @else
                     <div class="w-16 h-16 border flex items-center justify-center text-xs text-gray-500">
-                        Tidak ada foto
+                        No photo
                     </div>
                     @endif
                 </td>
@@ -58,25 +58,25 @@
                     <div class="flex justify-end gap-4 text-xs font-medium">
                         <a href="{{ route('users.show', ['id' => $user->id]) }}"
                             class="text-[#16213A] hover:text-[#A16207]">
-                            Lihat
+                            View
                         </a>
 
                         <a href="{{ route('users.edit', ['id' => $user->id]) }}"
                             class="text-[#16213A] hover:text-[#A16207]">
-                            Ubah
+                            Edit
                         </a>
 
                         <form
                             action="{{ route('users.destroy', ['id' => $user->id]) }}"
                             method="POST"
-                            onsubmit="return confirm('Hapus data pengguna ini?')">
+                            onsubmit="return confirm('Delete this user?')">
 
                             @csrf
                             @method('DELETE')
 
                             <button type="submit"
                                 class="text-red-700 hover:text-red-900">
-                                Hapus
+                                Delete
                             </button>
                         </form>
                     </div>

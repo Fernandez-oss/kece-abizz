@@ -7,15 +7,15 @@
 <div class="mb-6">
 
     <p class="text-[11px] uppercase tracking-[0.2em] text-[#A16207]">
-        Peminjaman
+        Borrowings
     </p>
 
     <h1 class="mt-2 font-display text-3xl font-semibold text-[#16213A]">
-        Daftar Peminjaman
+        Borrowing List
     </h1>
 
     <p class="mt-2 text-sm text-gray-500">
-        Kelola dan konfirmasi pengembalian buku.
+        Manage and confirm book returns.
     </p>
 
 </div>
@@ -38,19 +38,19 @@
         <div class="grid grid-cols-5 border-b border-[#E5E3DB] bg-[#F7F6F1] px-6 py-4 text-xs font-semibold uppercase tracking-wider text-gray-500">
 
             <div>
-                Nama Peminjam
+                Borrower Name
             </div>
 
             <div>
-                Buku
+                Book Title
             </div>
 
             <div>
-                Jumlah
+                Quantity
             </div>
 
             <div>
-                Sisa Waktu
+                Time Remaining
             </div>
 
             <div>
@@ -75,7 +75,7 @@
                 href="{{ route('borrowings.show', $borrowing->id) }}"
                 class="grid grid-cols-5 items-center border-b border-[#EFEDE6] px-6 py-5 transition hover:bg-[#FAF9F5]">
 
-                {{-- NAMA --}}
+                {{-- NAME --}}
                 <div>
 
                     <p class="text-sm font-medium text-[#16213A]">
@@ -85,7 +85,7 @@
                 </div>
 
 
-                {{-- BUKU --}}
+                {{-- BOOK --}}
                 <div>
 
                     <p class="text-sm text-[#16213A]">
@@ -95,7 +95,7 @@
                 </div>
 
 
-                {{-- JUMLAH --}}
+                {{-- QUANTITY --}}
                 <div>
 
                     <p class="text-sm text-[#16213A]">
@@ -105,7 +105,7 @@
                 </div>
 
 
-                {{-- SISA WAKTU --}}
+                {{-- TIME REMAINING --}}
                 <div>
 
                     @if ($borrowing->status === 'return_requested')
@@ -117,19 +117,19 @@
                     @elseif ($remainingDays > 0)
 
                         <p class="text-sm text-[#16213A]">
-                            {{ $remainingDays }} hari lagi
+                            {{ $remainingDays }} {{ Str::plural('day', $remainingDays) }} left
                         </p>
 
                     @elseif ($remainingDays === 0)
 
                         <p class="text-sm font-medium text-[#A16207]">
-                            Jatuh tempo hari ini
+                            Due today
                         </p>
 
                     @else
 
                         <p class="text-sm font-medium text-red-600">
-                            Terlambat {{ abs($remainingDays) }} hari
+                            {{ abs($remainingDays) }} {{ Str::plural('day', abs($remainingDays)) }} overdue
                         </p>
 
                     @endif
@@ -143,13 +143,13 @@
                     @if ($borrowing->status === 'borrowed')
 
                         <span class="inline-block border border-[#E5E3DB] px-3 py-1 text-xs text-gray-600">
-                            Sedang Dipinjam
+                            Borrowed
                         </span>
 
                     @elseif ($borrowing->status === 'return_requested')
 
                         <span class="inline-block border border-[#A16207] bg-[#FFF9ED] px-3 py-1 text-xs font-medium text-[#A16207]">
-                            Menunggu Konfirmasi
+                            Pending Confirmation
                         </span>
 
                     @endif
@@ -167,7 +167,7 @@
     <div class="border border-[#E5E3DB] bg-white px-6 py-12 text-center">
 
         <p class="text-sm text-gray-500">
-            Belum ada peminjaman.
+            No borrowings found.
         </p>
 
     </div>

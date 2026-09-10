@@ -9,29 +9,27 @@
     <a
         href="{{ route('borrowings.show', $borrowing->id) }}"
         class="text-sm font-medium text-[#16213A] hover:text-[#A16207]">
-        ← Kembali ke Detail Peminjaman
+        ← Back to Borrowing Details
     </a>
 
 </div>
 
-
 <div class="max-w-xl border border-[#E5E3DB] bg-white p-6">
 
     <p class="text-[11px] uppercase tracking-[0.2em] text-[#A16207]">
-        Perpanjang Peminjaman
+        Extend Borrowing
     </p>
 
     <h1 class="mt-2 font-display text-2xl font-semibold text-[#16213A]">
         {{ $borrowing->book->name }}
     </h1>
 
-
     <div class="mt-6 space-y-4">
 
         <div>
 
             <p class="text-xs uppercase tracking-wider text-gray-400">
-                Peminjam
+                Borrower
             </p>
 
             <p class="mt-1 text-sm text-[#16213A]">
@@ -40,11 +38,10 @@
 
         </div>
 
-
         <div>
 
             <p class="text-xs uppercase tracking-wider text-gray-400">
-                Jatuh Tempo Saat Ini
+                Current Due Date
             </p>
 
             <p class="mt-1 text-sm text-[#16213A]">
@@ -55,7 +52,6 @@
 
     </div>
 
-
     <form
         action="{{ route('borrowings.update', $borrowing->id) }}"
         method="POST"
@@ -64,11 +60,10 @@
         @csrf
         @method('PUT')
 
-
         <label
             for="due_date"
             class="text-xs uppercase tracking-wider text-gray-400">
-            Perpanjang Sampai
+            Extend Until
         </label>
 
         <input
@@ -80,7 +75,6 @@
             required
             class="mt-2 block w-full border border-[#E5E3DB] bg-white px-4 py-3 text-sm text-[#16213A] outline-none focus:border-[#16213A]">
 
-
         @error('due_date')
 
             <p class="mt-2 text-sm text-red-600">
@@ -89,11 +83,10 @@
 
         @enderror
 
-
         <button
             type="submit"
             class="mt-6 bg-[#16213A] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#26324f]">
-            Simpan Perpanjangan
+            Save Extension
         </button>
 
     </form>
