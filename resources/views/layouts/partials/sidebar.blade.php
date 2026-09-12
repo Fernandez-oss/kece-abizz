@@ -48,7 +48,7 @@
 
             {{-- PROFILE BUTTON --}}
             <div class="pt-4 mt-4 border-t border-gray-700">
-                <a href="{{ route('profile.show') }}" class="flex items-center gap-3 px-3 py-2 text-sm rounded text-amber-400 hover:bg-[#26324f] transition">
+                <a href="{{ route('name') }}" class="flex items-center justify-center gap-2 rounded-full bg-[#003565]/40 py-2.5 text-xs font-medium text-black transition hover:bg-[#003565]">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                     </svg>

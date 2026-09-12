@@ -6,11 +6,12 @@
 <div class="min-h-screen bg-[#FFF2E0] p-6 text-[#222]">
     <div class="mx-auto max-w-5xl">
         {{-- HEADER SECTION --}}
-        <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-                <h1 class="font-serif text-2xl font-bold text-[#003565]">History</h1>
-                <p class="mt-1 font-serif text-sm text-[#666]">Track your borrowing activity</p>
-            </div>
+        <div class="mb-8 flex justify-center">
+            <img 
+                src="{{ asset('images/History.png') }}" 
+                alt="History" 
+                class="h-20 w-auto object-contain"
+            >
         </div>
 
         {{-- ALERT MESSAGES --}}

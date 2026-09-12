@@ -8,7 +8,7 @@
     {{-- HEADER SECTION --}}
     <div class="mb-8 flex justify-center">
         <img 
-            src="{{ asset('images/loan.png') }}" 
+            src="{{ asset('images/LoanAplication.png') }}" 
             alt="Loan Application" 
             class="h-20 w-auto object-contain"
         >
@@ -32,7 +32,7 @@
             <div class="lg:col-span-7">
                 <div class="rounded-2xl border border-[#7E97A6] bg-[#FFF8EF] p-6 shadow-sm">
                     {{-- CARD HEADER --}}
-                    <div class="-mx-6 -mt-6 mb-6 flex items-center gap-2 rounded-t-2xl bg-[#7E97A6] px-6 py-3.5 text-white shadow-sm">
+                    <div class="-mx-6 -mt-6 mb-6 flex items-center gap-2 rounded-t-2xl bg-[#7E97A6] px-6 py-3.5 text-[#000000] shadow-sm">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                         </svg>
@@ -93,7 +93,7 @@
 
                     {{-- BUTTON ADD MORE BOOKS --}}
                     <div class="mt-6">
-                        <a href="{{ route('users.index') }}" class="inline-flex items-center gap-2 rounded-full bg-[#7E97A6] px-5 py-2 font-serif text-xs font-semibold text-white shadow transition hover:opacity-90">
+                        <a href="{{ route('users.index') }}" class="inline-flex items-center gap-2 rounded-full bg-[#7E97A6] px-5 py-2 font-serif text-xs font-semibold text-[#000000] shadow transition hover:opacity-90">
                             <span>+</span>
                             <span>Add more books</span>
                         </a>
@@ -106,12 +106,12 @@
 
                 {{-- PICKUP INFORMATION CARD --}}
                 <div class="rounded-2xl border border-[#7E97A6] bg-[#FFF8EF] p-6 shadow-sm">
-                    <div class="-mx-6 -mt-6 mb-5 flex items-center gap-2 rounded-t-2xl bg-[#7E97A6] px-6 py-3.5 text-white shadow-sm">
+                    <div class="-mx-6 -mt-6 mb-5 flex items-center gap-2 rounded-t-2xl bg-[#7E97A6] px-6 py-3.5 text-[#000000] shadow-sm">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
-                        <h2 class="font-serif text-base font-semibold tracking-wide">
+                        <h2 class="font-serif text-base font-semibold tracking-wide text-[#000000]">
                             Pickup Information
                         </h2>
                     </div>
@@ -151,7 +151,7 @@
 
                 {{-- LOAN SUMMARY CARD --}}
                 <div class="rounded-2xl border border-[#7E97A6] bg-[#FFF8EF] p-6 shadow-sm">
-                    <div class="-mx-6 -mt-6 mb-5 flex items-center gap-2 rounded-t-2xl bg-[#7E97A6] px-6 py-3.5 text-white shadow-sm">
+                    <div class="-mx-6 -mt-6 mb-5 flex items-center gap-2 rounded-t-2xl bg-[#7E97A6] px-6 py-3.5 text-[#000000] shadow-sm">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
@@ -189,7 +189,7 @@
                             <span class="font-semibold">$0.00</span>
                         </div>
 
-                        <div class="mt-4 flex items-center justify-between rounded-xl bg-[#7E97A6] px-4 py-2.5 font-bold text-white shadow-sm">
+                        <div class="mt-4 flex items-center justify-between rounded-xl bg-[#7E97A6] px-4 py-2.5 font-bold text-[#000000] shadow-sm">
                             <span>Total</span>
                             <span>{{ $bookCount }} books</span>
                         </div>

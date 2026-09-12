@@ -11,6 +11,7 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\UserBorrowingController;
+use App\Http\Controllers\UserCategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\ProfileController;
@@ -29,6 +30,8 @@ Route::get('/home', [BookController::class, 'userIndex'])->name('home');
 
 // SEARCH BUKU USER (DILETAKKAN DI LUAR GROUP BUKU AGAR TIDAK BENTROK KETIKA DIAKSES)
 Route::get('/search', [BookController::class, 'search'])->name('search');
+
+Route::get('/category', [UserCategoryController::class, 'index'])->name('category');
 
 // ==================================================
 // REGISTER & LOGIN

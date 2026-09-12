@@ -70,10 +70,10 @@
                     <a href="{{ route('users.index') }}" class="flex items-center justify-center gap-2 rounded-md px-3 py-2.5 text-xs font-medium text-[#352D2A] transition hover:bg-[#003565]/60 hover:text-white">
                         Home
                     </a>
-                    <a href="" class="flex items-center justify-center gap-2 rounded-md px-3 py-2.5 text-xs font-medium text-[#352D2A] transition hover:bg-[#003565]/60 hover:text-white">
+                    <a href="{{ route('search') }}" class="flex items-center justify-center gap-2 rounded-md px-3 py-2.5 text-xs font-medium text-[#352D2A] transition hover:bg-[#003565]/60 hover:text-white">
                         Search
                     </a>
-                    <a href="" class="flex items-center justify-center gap-2 rounded-md px-3 py-2.5 text-xs font-medium text-[#352D2A] transition hover:bg-[#003565]/60 hover:text-white">
+                    <a href="{{ route('category') }}" class="flex items-center justify-center gap-2 rounded-md px-3 py-2.5 text-xs font-medium text-[#352D2A] transition hover:bg-[#003565]/60 hover:text-white">
                         Category
                     </a>
                     <a href="{{ route('cart.index') }}" class="flex items-center justify-center gap-2 rounded-md px-3 py-2.5 text-xs font-medium text-[#352D2A] transition hover:bg-[#003565]/60 hover:text-white">
@@ -85,7 +85,7 @@
                 </div>
 
                 {{-- PROFILE BUTTON --}}
-                <a href="{{ route('name') }}" class="flex items-center justify-center gap-2 rounded-full bg-[#003565]/40 py-2.5 text-xs font-medium text-white transition hover:bg-[#003565]">
+                <a href="{{ route('name') }}" class="flex items-center justify-center gap-2 rounded-full bg-[#003565]/40 py-2.5 text-xs font-medium text-black transition hover:bg-[#003565]">
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                     </svg>
