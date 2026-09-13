@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('cover_image');
             $table->string('author');
             $table->unsignedBigInteger('publisher_id');
-            $table->year('year');
+            $table->integer('year');
             $table->integer('stock');
             $table->text('description');
             $table->timestamps();
