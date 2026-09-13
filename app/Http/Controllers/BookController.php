@@ -12,8 +12,15 @@ class BookController extends Controller
      */
     public function userIndex()
     {
-        $books = Book::with(['author', 'category'])->latest()->take(8)->get();
-        return view('users.index', compact('books'));
+        // Mengambil buku terbaru agar tampilannya sama persis seperti di foto kedua
+        $latestBooks = Book::with(['author', 'category'])->latest()->take(5)->get();
+
+        return view('users.index', [
+            'title'         => 'Home',
+            'newArrivals'   => $latestBooks,
+            'mostBorrowed'  => $latestBooks,
+            'favoriteBooks' => $latestBooks,
+        ]);
     }
 
     /**
