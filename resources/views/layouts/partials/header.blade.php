@@ -33,7 +33,7 @@
                         Publishers
                     </a>
                     <a href="{{ route('borrowings.index') }}" class="rounded-md px-3 py-2.5 text-center text-xs font-medium text-[#352D2A] transition hover:bg-[#003565]/60 hover:text-white">
-                        Peminjaman
+                        Borrowings
                     </a>
                 </div>
 
