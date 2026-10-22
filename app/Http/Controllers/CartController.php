@@ -11,14 +11,15 @@ class CartController extends Controller
 {
     public function index()
     {
-        $carts = Cart::with('book')
+        // Mengambil data keranjang beserta relasi book dan author
+        $carts = Cart::with(['book.author'])
             ->where('user_id', Auth::id())
             ->latest()
             ->get();
 
         return view('users.cart', [
-            'title' => 'Keranjang Peminjaman',
-            'carts' => $carts,
+            'title' => 'Loan Application',
+            'carts' => $carts, // Nama variabel disesuaikan menjadi $carts
         ]);
     }
 
@@ -39,7 +40,8 @@ class CartController extends Controller
             ->exists();
 
         if ($alreadyExists) {
-            return back()->with('error', 'Buku sudah ada di keranjang.');
+            // Jika sudah ada di cart, langsung redirect ke halaman cart
+            return redirect()->route('cart.index')->with('error', 'Buku sudah ada di keranjang.');
         }
 
         Cart::create([
@@ -47,7 +49,8 @@ class CartController extends Controller
             'book_id' => $book->id,
         ]);
 
-        return back()->with('success', 'Buku berhasil ditambahkan ke keranjang.');
+        // Redirect langsung ke halaman keranjang (Loan Application)
+        return redirect()->route('cart.index')->with('success', 'Buku berhasil ditambahkan ke keranjang.');
     }
 
     public function destroy($id)

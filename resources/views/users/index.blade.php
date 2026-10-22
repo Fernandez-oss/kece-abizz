@@ -4,91 +4,160 @@
 
 @section('content')
 
-<div class="mb-8 border-b border-[#E5E3DB] pb-5">
-    <p class="mb-1 text-[11px] uppercase tracking-[0.2em] text-[#A16207]">
-        Tahun Ajaran 2025/2026
-    </p>
+<div class="space-y-6">
 
-    <h1 class="font-display text-3xl font-semibold text-[#16213A]">
-        Daftar Buku
-    </h1>
-
-    <p class="mt-2 text-sm text-gray-500">
-        Pilih buku yang ingin kamu lihat.
-    </p>
-</div>
-
-
-@if ($books->isEmpty())
-
-    <div class="border border-[#E5E3DB] bg-white px-6 py-12 text-center">
-        <p class="font-medium text-[#16213A]">
-            Belum ada buku yang tersedia.
-        </p>
+    {{-- 1. BANNER HEADER --}}
+    <div class="w-full overflow-hidden rounded-[15px]">
+        <img 
+            src="{{ asset('images/header.png') }}" 
+            alt="Welcome To Owl Post" 
+            class="w-full h-auto object-cover"
+        >
     </div>
 
-@else
+    {{-- 2. SECTION: MOST BORROWED (🔥) --}}
+    @if(isset($mostBorrowed) && $mostBorrowed->isNotEmpty())
+        <div class="rounded-[15px] bg-[#C1C5C2] px-6 py-6">
+            <div class="mb-4 flex items-center gap-2">
+                <span class="text-lg">🔥</span>
+                <h2 class="font-serif text-base font-semibold text-[#222]">
+                    Most Borrowed
+                </h2>
+            </div>
 
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-
-        @foreach ($books as $book)
-
-            <a
-                href="{{ route('users.show', ['id' => $book->id]) }}"
-                class="group overflow-hidden border border-[#E5E3DB] bg-white transition hover:-translate-y-1 hover:shadow-md">
-
-                {{-- COVER --}}
-                <div class="h-64 bg-[#F7F6F1]">
-
-                    @if ($book->cover_image)
-
-                        <img
-                            src="{{ asset('cover_images/' . $book->cover_image) }}"
-                            alt="Cover {{ $book->name }}"
-                            class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
-
-                    @else
-
-                        <div class="flex h-full items-center justify-center text-sm text-gray-400">
-                            Tidak ada cover
+            <div class="flex items-start justify-between gap-4">
+                @foreach ($mostBorrowed as $book)
+                    <a
+                        href="{{ route('users.show', ['id' => $book->id]) }}"
+                        class="group flex flex-col items-start w-[160px]"
+                    >
+                        {{-- Cover Diperbesar Menjadi 160px x 235px --}}
+                        <div class="h-[235px] w-[160px] overflow-hidden rounded-sm bg-[#F7F6F1] shadow-md">
+                            @if ($book->cover_image)
+                                <img
+                                    src="{{ asset('cover_images/' . $book->cover_image) }}"
+                                    alt="Cover {{ $book->name }}"
+                                    class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                                >
+                            @else
+                                <div class="flex h-full w-full items-center justify-center text-center text-xs text-gray-400 p-2">
+                                    Tidak ada cover
+                                </div>
+                            @endif
                         </div>
 
-                    @endif
+                        {{-- Teks Judul & Author Diperbesar --}}
+                        <div class="mt-2.5 w-full">
+                            <h3 class="line-clamp-2 font-serif text-[15px] font-semibold leading-snug text-[#222] group-hover:underline">
+                                {{ $book->name }}
+                            </h3>
 
-                </div>
+                            @if ($book->author)
+                                <p class="mt-1 line-clamp-1 font-serif text-[13px] text-[#555]">
+                                    {{ $book->author->name }}
+                                </p>
+                            @endif
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    @endif
 
+    {{-- 3. SECTION: READER'S FAVORITES (❤️) --}}
+    @if(isset($favoriteBooks) && $favoriteBooks->isNotEmpty())
+        <div class="rounded-[15px] bg-[#C1C5C2] px-6 py-6">
+            <div class="mb-4 flex items-center gap-2">
+                <span class="text-lg">❤️</span>
+                <h2 class="font-serif text-base font-semibold text-[#222]">
+                    Reader's Favorites
+                </h2>
+            </div>
 
-                {{-- DATA BUKU --}}
-                <div class="p-5">
+            <div class="flex items-start justify-between gap-4">
+                @foreach ($favoriteBooks as $book)
+                    <a
+                        href="{{ route('users.show', ['id' => $book->id]) }}"
+                        class="group flex flex-col items-start w-[160px]"
+                    >
+                        <div class="h-[235px] w-[160px] overflow-hidden rounded-sm bg-[#F7F6F1] shadow-md">
+                            @if ($book->cover_image)
+                                <img
+                                    src="{{ asset('cover_images/' . $book->cover_image) }}"
+                                    alt="Cover {{ $book->name }}"
+                                    class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                                >
+                            @else
+                                <div class="flex h-full w-full items-center justify-center text-center text-xs text-gray-400 p-2">
+                                    Tidak ada cover
+                                </div>
+                            @endif
+                        </div>
 
-                    <p class="mb-1 text-[10px] uppercase tracking-[0.15em] text-[#A16207]">
-                        Buku
-                    </p>
+                        <div class="mt-2.5 w-full">
+                            <h3 class="line-clamp-2 font-serif text-[15px] font-semibold leading-snug text-[#222] group-hover:underline">
+                                {{ $book->name }}
+                            </h3>
 
-                    <h2 class="line-clamp-2 text-lg font-semibold text-[#16213A]">
-                        {{ $book->name }}
-                    </h2>
+                            @if ($book->author)
+                                <p class="mt-1 line-clamp-1 font-serif text-[13px] text-[#555]">
+                                    {{ $book->author->name }}
+                                </p>
+                            @endif
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    @endif
 
-                    @if ($book->author)
-                        <p class="mt-2 text-sm text-gray-500">
-                            {{ $book->author->name }}
-                        </p>
-                    @endif
+    {{-- 4. SECTION: NEW ARRIVALS (🆕) --}}
+    @if(isset($newArrivals) && $newArrivals->isNotEmpty())
+        <div class="rounded-[15px] bg-[#C1C5C2] px-6 py-6">
+            <div class="mb-4 flex items-center gap-2">
+                <span class="text-lg">🆕</span>
+                <h2 class="font-serif text-base font-semibold text-[#222]">
+                    New Arrivals
+                </h2>
+            </div>
 
-                    @if ($book->description)
-                        <p class="mt-3 line-clamp-3 text-sm leading-6 text-gray-600">
-                            {{ $book->description }}
-                        </p>
-                    @endif
+            <div class="flex items-start justify-between gap-4">
+                @foreach ($newArrivals as $book)
+                    <a
+                        href="{{ route('users.show', ['id' => $book->id]) }}"
+                        class="group flex flex-col items-start w-[160px]"
+                    >
+                        <div class="h-[235px] w-[160px] overflow-hidden rounded-sm bg-[#F7F6F1] shadow-md">
+                            @if ($book->cover_image)
+                                <img
+                                    src="{{ asset('cover_images/' . $book->cover_image) }}"
+                                    alt="Cover {{ $book->name }}"
+                                    class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                                >
+                            @else
+                                <div class="flex h-full w-full items-center justify-center text-center text-xs text-gray-400 p-2">
+                                    Tidak ada cover
+                                </div>
+                            @endif
+                        </div>
 
-                </div>
+                        <div class="mt-2.5 w-full">
+                            <h3 class="line-clamp-2 font-serif text-[15px] font-semibold leading-snug text-[#222] group-hover:underline">
+                                {{ $book->name }}
+                            </h3>
 
-            </a>
+                            @if ($book->author)
+                                <p class="mt-1 line-clamp-1 font-serif text-[13px] text-[#555]">
+                                    {{ $book->author->name }}
+                                </p>
+                            @endif
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    @endif
 
-        @endforeach
-
-    </div>
-
-@endif
+</div>
 
 @endsection

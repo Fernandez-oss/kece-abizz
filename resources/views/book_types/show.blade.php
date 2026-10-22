@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Tipe Buku')
+@section('title', 'Book Type Details')
 
 @section('content')
 
 <div class="mb-8 flex items-end justify-between border-b border-[#E5E3DB] pb-5">
     <div>
         <p class="mb-1 text-[11px] uppercase tracking-[0.2em] text-[#A16207]">
-            Koleksi Perpustakaan
+            Library Collection
         </p>
 
         <h1 class="font-display text-3xl font-semibold text-[#16213A]">
-            Detail Tipe Buku
+            Book Type Details
         </h1>
     </div>
 </div>
@@ -28,7 +28,7 @@
 
             <div>
                 <p class="text-xs uppercase tracking-wider text-gray-500">
-                    Nama Tipe Buku
+                    Book Type Name
                 </p>
 
                 <p class="text-[#16213A]">
@@ -38,7 +38,7 @@
 
             <div>
                 <p class="text-xs uppercase tracking-wider text-gray-500">
-                    Data Diinput
+                    Created At
                 </p>
 
                 <p class="text-[#16213A]">
@@ -48,7 +48,7 @@
 
             <div>
                 <p class="text-xs uppercase tracking-wider text-gray-500">
-                    Terakhir Diupdate
+                    Last Updated
                 </p>
 
                 <p class="text-[#16213A]">
@@ -63,7 +63,7 @@
             <a
                 href="{{ route('book_types.index') }}"
                 class="border border-[#16213A] px-5 py-2.5 text-sm font-medium text-[#16213A] hover:bg-gray-100">
-                Kembali
+                Back
             </a>
 
             <a
@@ -75,7 +75,7 @@
             <form
                 action="{{ route('book_types.destroy', $bookType->id) }}"
                 method="POST"
-                onsubmit="return confirm('Hapus tipe buku ini?')">
+                onsubmit="return confirm('Delete this book type?')">
 
                 @csrf
                 @method('DELETE')
@@ -83,7 +83,7 @@
                 <button
                     type="submit"
                     class="bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800">
-                    Hapus
+                    Delete
                 </button>
 
             </form>

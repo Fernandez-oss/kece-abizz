@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Tipe Buku')
+@section('title', 'Edit Book Type')
 
 @section('content')
 
 <div class="mb-8 border-b border-[#E5E3DB] pb-5">
     <p class="mb-1 text-[11px] uppercase tracking-[0.2em] text-[#A16207]">
-        Koleksi Perpustakaan
+        Library Collection
     </p>
 
     <h1 class="font-display text-3xl font-semibold text-[#16213A]">
-        Edit Tipe Buku
+        Edit Book Type
     </h1>
 </div>
 
@@ -35,7 +35,7 @@
         <label
             for="name"
             class="mb-2 block text-sm font-medium text-[#16213A]">
-            Nama Tipe Buku
+            Book Type Name
         </label>
 
         <input
@@ -52,13 +52,13 @@
         <a
             href="{{ route('book_types.show', $bookType->id) }}"
             class="border border-[#16213A] px-5 py-2.5 text-sm font-medium text-[#16213A] hover:bg-gray-100">
-            Kembali
+            Back
         </a>
 
         <button
             type="submit"
             class="bg-[#16213A] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#26324f]">
-            Simpan Perubahan
+            Save Changes
         </button>
 
     </div>

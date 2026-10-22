@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Buku')
+@section('title', 'Add Book')
 
 @section('content')
 
 <div class="mb-8 border-b border-[#E5E3DB] pb-5">
     <p class="mb-1 text-[11px] uppercase tracking-[0.2em] text-[#A16207]">
-        Koleksi Perpustakaan
+        Library Collection
     </p>
 
     <h1 class="font-display text-3xl font-semibold text-[#16213A]">
-        Tambah Buku
+        Add Book
     </h1>
 </div>
 
@@ -27,10 +27,10 @@
 <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
-    <!-- Nama -->
+    <!-- Book Name -->
     <div class="mb-5">
         <label for="name" class="mb-2 block text-sm font-medium text-[#16213A]">
-            Nama Buku
+            Book Title / Name
         </label>
         <input
             type="text"
@@ -51,7 +51,7 @@
             id="author_id"
             class="w-full border border-[#E5E3DB] bg-white px-4 py-3 focus:border-[#16213A] focus:outline-none"
             required>
-            <option value="">-- Pilih Author --</option>
+            <option value="">-- Select Author --</option>
             @foreach ($authors as $author)
             <option
                 value="{{ $author->id }}"
@@ -137,10 +137,10 @@
         </div>
     </div>
 
-    <!-- Tipe Buku -->
+    <!-- Book Type -->
     <div class="mb-5">
         <label class="mb-2 block text-sm font-medium text-[#16213A]">
-            Tipe Buku
+            Book Type
         </label>
         <div class="w-full border border-[#E5E3DB] bg-white p-4">
             <div class="space-y-2">
@@ -165,7 +165,7 @@
     <!-- Cover -->
     <div class="mb-5">
         <label for="cover_image" class="mb-2 block text-sm font-medium text-[#16213A]">
-            Cover Buku
+            Book Cover
         </label>
         <input
             type="file"
@@ -176,10 +176,10 @@
             required>
     </div>
 
-    <!-- Tahun -->
+    <!-- Year -->
     <div class="mb-5">
         <label for="year" class="mb-2 block text-sm font-medium text-[#16213A]">
-            Tahun Terbit
+            Publication Year
         </label>
         <input
             type="number"
@@ -190,10 +190,10 @@
             required>
     </div>
 
-    <!-- Stok -->
+    <!-- Stock -->
     <div class="mb-5">
         <label for="stock" class="mb-2 block text-sm font-medium text-[#16213A]">
-            Stok
+            Stock
         </label>
         <input
             type="number"
@@ -205,10 +205,10 @@
             required>
     </div>
 
-    <!-- Deskripsi -->
+    <!-- Description -->
     <div class="mb-6">
         <label for="description" class="mb-2 block text-sm font-medium text-[#16213A]">
-            Deskripsi
+            Description
         </label>
         <textarea
             id="description"
@@ -218,17 +218,17 @@
             required>{{ old('description') }}</textarea>
     </div>
 
-    <!-- Tombol -->
+    <!-- Action Buttons -->
     <div class="flex gap-3">
         <a
             href="{{ route('books.index') }}"
             class="border border-[#16213A] px-5 py-2.5 text-sm font-medium text-[#16213A] hover:bg-gray-100">
-            Kembali
+            Back
         </a>
         <button
             type="submit"
             class="bg-[#16213A] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#26324f]">
-            Simpan
+            Save
         </button>
     </div>
 </form>
