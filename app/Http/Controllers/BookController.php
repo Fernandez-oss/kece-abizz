@@ -7,15 +7,16 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    /**
-     * Menampilkan Tampilan Homepage User
-     */
     public function userIndex()
     {
-        $books = Book::with(['author', 'category'])->latest()->take(8)->get();
-        return view('users.index', compact('books'));
-    }
+        $books = Book::with(['author', 'category', 'genres'])
+            ->latest()
+            ->paginate(12);
 
+        $title = 'Home';
+
+        return view('users.index', compact('books', 'title'));
+    }
     /**
      * Menampilkan Halaman Pencarian Buku (Search Page)
      */
@@ -86,7 +87,7 @@ class BookController extends Controller
     public function show($id)
     {
         $book = Book::with(['author', 'category', 'genres', 'publishers', 'bookTypes'])->findOrFail($id);
-        return view('users.show', compact('book'));
+        return view('books.show', compact('book'));
     }
 
     /**

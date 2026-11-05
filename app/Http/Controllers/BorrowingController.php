@@ -91,4 +91,15 @@ class BorrowingController extends Controller
             ->route('borrowings.index')
             ->with('success', 'Pengembalian buku berhasil dikonfirmasi.');
     }
+
+    public function overdue()
+    {
+        $borrowings = Borrowing::with(['user', 'book'])
+            ->where('status', 'borrowed')
+            ->whereDate('due_date', '<', today())
+            ->orderBy('due_date')
+            ->get();
+
+        return view('borrowings.overdue', compact('borrowings'));
+    }
 }

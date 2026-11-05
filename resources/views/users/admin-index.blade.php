@@ -56,18 +56,18 @@
 
                 <td class="px-5 py-4">
                     <div class="flex justify-end gap-4 text-xs font-medium">
-                        <a href="{{ route('users.show', ['id' => $user->id]) }}"
+                        <a href="{{ route('admins.show', ['id' => $user->id]) }}"
                             class="text-[#16213A] hover:text-[#A16207]">
                             View
                         </a>
 
-                        <a href="{{ route('users.edit', ['id' => $user->id]) }}"
+                        <a href="{{ route('admins.edit', ['id' => $user->id]) }}"
                             class="text-[#16213A] hover:text-[#A16207]">
                             Edit
                         </a>
 
                         <form
-                            action="{{ route('users.destroy', ['id' => $user->id]) }}"
+                            action="{{ route('admins.destroy', ['id' => $user->id]) }}"
                             method="POST"
                             onsubmit="return confirm('Delete this user?')">
 

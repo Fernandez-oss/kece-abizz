@@ -24,7 +24,6 @@ class LoginController extends Controller
                 ->withInput();
         }
 
-        // Membuat session login Laravel
         Auth::login($user);
         $request->session()->regenerate();
 
@@ -33,7 +32,7 @@ class LoginController extends Controller
         }
 
         if ($user->role === 'admin') {
-            return redirect()->route('admins.index');
+            return redirect()->route('admin.dashboard');
         }
 
         Auth::logout();
@@ -41,5 +40,16 @@ class LoginController extends Controller
         return back()->withErrors([
             'name' => 'Role akun tidak dikenali.',
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')
+            ->with('success', 'Kamu berhasil logout.');
     }
 }

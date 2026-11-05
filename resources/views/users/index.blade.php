@@ -14,7 +14,7 @@
             class="w-full h-auto object-cover"
         >
     </div>
-
+ 
     {{-- 2. SECTION: MOST BORROWED (🔥) --}}
     @if(isset($mostBorrowed) && $mostBorrowed->isNotEmpty())
         <div class="rounded-[15px] bg-[#C1C5C2] px-6 py-6">

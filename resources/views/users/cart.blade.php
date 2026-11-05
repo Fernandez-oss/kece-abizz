@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('title', 'Loan Application')
@@ -7,37 +8,52 @@
 
     {{-- HEADER SECTION --}}
     <div class="mb-8 flex justify-center">
-        <img 
-            src="{{ asset('images/LoanAplication.png') }}" 
-            alt="Loan Application" 
+        <img
+            src="{{ asset('images/LoanAplication.png') }}"
+            alt="Loan Application"
             class="h-20 w-auto object-contain"
         >
     </div>
 
-    {{-- NOTIFIKASI ERROR / SUCCESS (Jika ada) --}}
+    {{-- NOTIFICATION --}}
     @if(session('error'))
-        <div class="mx-auto mb-6 max-w-4xl rounded-xl bg-red-100 p-4 font-serif text-xs text-red-700 shadow-sm border border-red-200">
+        <div class="mx-auto mb-6 max-w-4xl rounded-xl border border-red-200 bg-red-100 p-4 font-serif text-xs text-red-700 shadow-sm">
             {{ session('error') }}
         </div>
     @endif
 
-    {{-- MAIN FORM PEMINJAMAN --}}
+    @if($errors->any())
+        <div class="mx-auto mb-6 max-w-4xl rounded-xl border border-red-200 bg-red-100 p-4 font-serif text-xs text-red-700 shadow-sm">
+            <ul class="list-inside list-disc">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    {{-- MAIN FORM --}}
     <form action="{{ route('borrowings.store') }}" method="POST">
         @csrf
 
-        {{-- MAIN CONTENT GRID --}}
+        @php
+            $bookCount = $carts->count();
+            $selectedDays = old('days', 7);
+        @endphp
+
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
 
             {{-- LEFT COLUMN: SELECTED BOOKS --}}
             <div class="lg:col-span-7">
                 <div class="rounded-2xl border border-[#7E97A6] bg-[#FFF8EF] p-6 shadow-sm">
-                    {{-- CARD HEADER --}}
+
                     <div class="-mx-6 -mt-6 mb-6 flex items-center gap-2 rounded-t-2xl bg-[#7E97A6] px-6 py-3.5 text-[#000000] shadow-sm">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                         </svg>
+
                         <h2 class="font-serif text-base font-semibold tracking-wide">
-                            Your Selected Books ({{ $carts->count() ?? 0 }})
+                            Your Selected Books ({{ $bookCount }})
                         </h2>
                     </div>
 
@@ -45,12 +61,19 @@
                     <div class="space-y-4">
                         @forelse($carts as $item)
                             <div class="relative flex items-center gap-4 rounded-xl bg-[#F5EFE0] p-4 shadow-sm">
+
                                 {{-- BOOK COVER --}}
                                 <div class="h-24 w-16 shrink-0 overflow-hidden rounded bg-gray-200 shadow">
                                     @if(!empty($item->book->cover_image))
-                                        <img src="{{ asset('cover_images/' . $item->book->cover_image) }}" alt="{{ $item->book->title ?? $item->book->name }}" class="h-full w-full object-cover">
+                                        <img
+                                            src="{{ asset('cover_images/' . $item->book->cover_image) }}"
+                                            alt="{{ $item->book->title ?? $item->book->name }}"
+                                            class="h-full w-full object-cover"
+                                        >
                                     @else
-                                        <div class="flex h-full w-full items-center justify-center text-[10px] text-gray-400">No Cover</div>
+                                        <div class="flex h-full w-full items-center justify-center text-[10px] text-gray-400">
+                                            No Cover
+                                        </div>
                                     @endif
                                 </div>
 
@@ -59,11 +82,12 @@
                                     <h3 class="font-serif text-sm font-bold text-[#111]">
                                         {{ $item->book->title ?? $item->book->name ?? 'Untitled' }}
                                     </h3>
+
                                     <p class="font-serif text-xs text-[#555]">
                                         {{ $item->book->author->name ?? $item->book->author ?? 'Unknown Author' }}
                                     </p>
-                                    
-                                    {{-- BADGE STOK / AVAILABILITY --}}
+
+                                    {{-- STOCK BADGE --}}
                                     @if(($item->book->stock ?? 0) > 0)
                                         <span class="mt-2 inline-flex items-center gap-1 rounded-full bg-[#82B366] px-2.5 py-0.5 text-[10px] font-medium text-white shadow-sm">
                                             ✓ available
@@ -75,11 +99,11 @@
                                     @endif
                                 </div>
 
-                                {{-- REMOVE BUTTON (Gunakan Form External agar tidak bentrok dengan Form Checkout) --}}
-                                <button 
-                                    type="submit" 
-                                    form="delete-cart-{{ $item->id }}" 
-                                    class="absolute top-3 right-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#8CA3B0] text-xs font-bold text-white transition hover:bg-red-500"
+                                {{-- REMOVE BUTTON --}}
+                                <button
+                                    type="submit"
+                                    form="delete-cart-{{ $item->id }}"
+                                    class="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#8CA3B0] text-xs font-bold text-white transition hover:bg-red-500"
                                 >
                                     ✕
                                 </button>
@@ -91,9 +115,12 @@
                         @endforelse
                     </div>
 
-                    {{-- BUTTON ADD MORE BOOKS --}}
+                    {{-- ADD MORE BOOKS --}}
                     <div class="mt-6">
-                        <a href="{{ route('users.index') }}" class="inline-flex items-center gap-2 rounded-full bg-[#7E97A6] px-5 py-2 font-serif text-xs font-semibold text-[#000000] shadow transition hover:opacity-90">
+                        <a
+                            href="{{ route('users.index') }}"
+                            class="inline-flex items-center gap-2 rounded-full bg-[#7E97A6] px-5 py-2 font-serif text-xs font-semibold text-[#000000] shadow transition hover:opacity-90"
+                        >
                             <span>+</span>
                             <span>Add more books</span>
                         </a>
@@ -101,89 +128,115 @@
                 </div>
             </div>
 
-            {{-- RIGHT COLUMN: PICKUP & SUMMARY --}}
+            {{-- RIGHT COLUMN --}}
             <div class="space-y-6 lg:col-span-5">
 
-                {{-- PICKUP INFORMATION CARD --}}
+                {{-- PICKUP INFORMATION --}}
                 <div class="rounded-2xl border border-[#7E97A6] bg-[#FFF8EF] p-6 shadow-sm">
+
                     <div class="-mx-6 -mt-6 mb-5 flex items-center gap-2 rounded-t-2xl bg-[#7E97A6] px-6 py-3.5 text-[#000000] shadow-sm">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
+
                         <h2 class="font-serif text-base font-semibold tracking-wide text-[#000000]">
                             Pickup Information
                         </h2>
                     </div>
 
-                    <div class="space-y-4">
-                        <div>
-                            <label class="mb-1 block font-serif text-xs text-[#555]">Pickup Location</label>
-                            <div class="flex items-center justify-between rounded-xl border border-[#B0C0CC] bg-[#F5EFE0] p-3 shadow-sm">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex h-8 w-8 items-center justify-center rounded bg-[#7E97A6] text-white">
-                                        🏢
-                                    </div>
-                                    <div>
-                                        <p class="font-serif text-xs font-bold text-[#111]">OwlPost Library</p>
-                                        <p class="font-serif text-[10px] text-[#666]">Mainhattan street 123</p>
-                                    </div>
-                                </div>
-                                <button type="button" class="font-serif text-[10px] text-[#2B547E] underline hover:opacity-75">
-                                    Change location
-                                </button>
-                            </div>
-                        </div>
+                    {{-- PICKUP LOCATION --}}
+                    <div>
+                        <label class="mb-1 block font-serif text-xs text-[#555]">
+                            Pickup Location
+                        </label>
 
-                        <div>
-                            <label for="pickup_date" class="mb-1 block font-serif text-xs text-[#555]">Preferred Pickup Dates</label>
-                            <input 
-                                type="date" 
-                                id="pickup_date" 
-                                name="pickup_date" 
-                                value="{{ date('Y-m-d') }}" 
-                                required
-                                class="w-full rounded-xl border border-[#B0C0CC] bg-[#F5EFE0] px-3 py-2 font-serif text-xs text-[#222] shadow-sm focus:outline-none"
+                        <div class="flex items-center justify-between rounded-xl border border-[#B0C0CC] bg-[#F5EFE0] p-3 shadow-sm">
+                            <div class="flex items-center gap-3">
+                                <div class="flex h-8 w-8 items-center justify-center rounded bg-[#7E97A6] text-white">
+                                    🏢
+                                </div>
+
+                                <div>
+                                    <p class="font-serif text-xs font-bold text-[#111]">
+                                        OwlPost Library
+                                    </p>
+                                    <p class="font-serif text-[10px] text-[#666]">
+                                        Mainhattan street 123
+                                    </p>
+                                </div>
+                            </div>
+
+                            <button
+                                type="button"
+                                class="font-serif text-[10px] text-[#2B547E] underline hover:opacity-75"
                             >
+                                Change location
+                            </button>
                         </div>
                     </div>
+
+                    {{-- LOAN DURATION --}}
+                    <div class="mt-4">
+                        <label for="days" class="mb-1 block font-serif text-xs text-[#555]">
+                            Loan Duration
+                        </label>
+
+                        <select
+                            id="days"
+                            name="days"
+                            required
+                            class="w-full rounded-xl border border-[#B0C0CC] bg-[#F5EFE0] px-3 py-2 font-serif text-xs text-[#222] shadow-sm focus:outline-none"
+                        >
+                            @for($day = 1; $day <= 7; $day++)
+                                <option
+                                    value="{{ $day }}"
+                                    {{ (int) $selectedDays === $day ? 'selected' : '' }}
+                                >
+                                    {{ $day }} {{ $day === 1 ? 'Day' : 'Days' }}
+                                </option>
+                            @endfor
+                        </select>
+
+                        <p class="mt-1 font-serif text-[10px] text-[#777]">
+                            Choose your borrowing period (maximum 7 days).
+                        </p>
+                    </div>
+
                 </div>
 
-                {{-- LOAN SUMMARY CARD --}}
+                {{-- LOAN SUMMARY --}}
                 <div class="rounded-2xl border border-[#7E97A6] bg-[#FFF8EF] p-6 shadow-sm">
+
                     <div class="-mx-6 -mt-6 mb-5 flex items-center gap-2 rounded-t-2xl bg-[#7E97A6] px-6 py-3.5 text-[#000000] shadow-sm">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
+
                         <h2 class="font-serif text-base font-semibold tracking-wide">
                             Loan Summary
                         </h2>
                     </div>
 
-                    @php
-                        $bookCount = $carts->count() ?? 0;
-                        $loanDays = $bookCount * 7;
-                    @endphp
-
                     <div class="space-y-3 font-serif text-xs text-[#222]">
+
                         <div class="flex justify-between">
                             <span>Books</span>
                             <span class="font-semibold">{{ $bookCount }}</span>
                         </div>
+
                         <div class="flex justify-between">
                             <span>Loan Period</span>
-                            <span class="font-semibold">
-                                @if($loanDays > 0)
-                                    {{ $loanDays }} days ({{ $bookCount }} {{ Str::plural('week', $bookCount) }})
-                                @else
-                                    0 days
-                                @endif
+                            <span id="loan-period" class="font-semibold">
+                                {{ $selectedDays }} {{ (int) $selectedDays === 1 ? 'day' : 'days' }}
                             </span>
                         </div>
+
                         <div class="flex justify-between">
                             <span>Pickup</span>
                             <span class="font-semibold text-green-700">Free</span>
                         </div>
+
                         <div class="flex justify-between">
                             <span>Fees</span>
                             <span class="font-semibold">$0.00</span>
@@ -197,29 +250,48 @@
                 </div>
 
                 {{-- CONFIRM LOAN BUTTON --}}
-                <button 
-                    type="submit" 
+                <button
+                    type="submit"
                     @if($bookCount === 0) disabled @endif
                     class="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#003565] py-3.5 font-serif text-sm font-semibold text-white shadow-lg transition hover:bg-[#002548] active:scale-98 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
+
                     <span>Confirm Loan</span>
                 </button>
 
             </div>
-
         </div>
     </form>
 
-    {{-- HIDDEN FORMS FOR DELETING CART ITEMS --}}
+    {{-- DELETE CART FORMS --}}
     @foreach($carts as $item)
-        <form id="delete-cart-{{ $item->id }}" action="{{ route('cart.destroy', $item->id) }}" method="POST" class="hidden">
+        <form
+            id="delete-cart-{{ $item->id }}"
+            action="{{ route('cart.destroy', $item->id) }}"
+            method="POST"
+            class="hidden"
+        >
             @csrf
             @method('DELETE')
         </form>
     @endforeach
 
 </div>
+
+{{-- UPDATE LOAN SUMMARY --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const daysSelect = document.getElementById('days');
+        const loanPeriod = document.getElementById('loan-period');
+
+        daysSelect.addEventListener('change', function () {
+            const days = parseInt(this.value);
+
+            loanPeriod.textContent = days + (days === 1 ? ' day' : ' days');
+        });
+    });
+</script>
 @endsection

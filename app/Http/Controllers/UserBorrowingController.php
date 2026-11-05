@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Book;
 use App\Models\Borrowing;
 use App\Models\Cart;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserBorrowingController extends Controller
 {
-    // Alias untuk memproses request checkout dari form cart (Route: borrowings.store)
+    // Memproses checkout
     public function store(Request $request)
     {
         return $this->checkout($request);
@@ -20,10 +18,8 @@ class UserBorrowingController extends Controller
 
     public function checkout(Request $request)
     {
-        // Validasi input tanggal pickup dan durasi dari cart
         $request->validate([
-            'pickup_date' => 'nullable|date',
-            'days'        => 'nullable|integer|min:1|max:14',
+            'days' => 'required|integer|min:1|max:7',
         ]);
 
         $carts = Cart::with('book')
@@ -43,8 +39,8 @@ class UserBorrowingController extends Controller
             }
         }
 
-        $pickupDate = $request->pickup_date ? Carbon::parse($request->pickup_date) : now();
-        $loanDays   = $request->days ?? 7;
+        $pickupDate = now();
+        $loanDays = (int) $request->days;
 
         DB::transaction(function () use ($carts, $pickupDate, $loanDays) {
             foreach ($carts as $cart) {
@@ -52,7 +48,7 @@ class UserBorrowingController extends Controller
                     'user_id'     => Auth::id(),
                     'book_id'     => $cart->book_id,
                     'borrowed_at' => $pickupDate,
-                    'due_date'    => $pickupDate->copy()->addDays((int) $loanDays),
+                    'due_date'    => $pickupDate->copy()->addDays($loanDays),
                     'returned_at' => null,
                     'status'      => 'borrowed',
                 ]);
@@ -63,19 +59,30 @@ class UserBorrowingController extends Controller
             Cart::where('user_id', Auth::id())->delete();
         });
 
-        // Redirect ke route borrowings.user.index
         return redirect()
             ->route('borrowings.user.index')
-            ->with('success', 'Semua buku berhasil dipinjam.');
+            ->with(
+                'success',
+                "Semua buku berhasil dipinjam dengan durasi {$loanDays} hari."
+            );
     }
 
-    // Menampilkan halaman history (resources/views/users/history.blade.php)
-    public function index()
+    // Menampilkan riwayat peminjaman
+    public function index(Request $request)
     {
-        $borrowings = Borrowing::with('book')
-            ->where('user_id', Auth::id())
-            ->latest()
-            ->get();
+        $query = Borrowing::with('book')
+            ->where('user_id', Auth::id());
+
+        // Pencarian berdasarkan judul buku
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->whereHas('book', function ($bookQuery) use ($search) {
+                $bookQuery->where('title', 'like', "%{$search}%");
+            });
+        }
+
+        $borrowings = $query->latest()->get();
 
         return view('users.history', [
             'title'      => 'Riwayat Peminjaman',
@@ -83,17 +90,12 @@ class UserBorrowingController extends Controller
         ]);
     }
 
+    // Mengajukan pengembalian satu buku
     public function returnBook($id)
     {
         $borrowing = Borrowing::where('user_id', Auth::id())
+            ->where('status', 'borrowed')
             ->findOrFail($id);
-
-        if ($borrowing->status !== 'borrowed') {
-            return back()->with(
-                'error',
-                'Buku ini sudah diajukan untuk dikembalikan.'
-            );
-        }
 
         $borrowing->update([
             'status'      => 'return_requested',
@@ -104,5 +106,47 @@ class UserBorrowingController extends Controller
             'success',
             'Pengembalian buku berhasil diajukan. Menunggu konfirmasi admin.'
         );
+    }
+
+    // Mengajukan pengembalian beberapa buku sekaligus
+    public function returnSelected(Request $request)
+    {
+        $validated = $request->validate([
+            'borrowing_ids'   => 'required|array|min:1',
+            'borrowing_ids.*' => 'required|integer|distinct',
+        ]);
+
+        $ids = $validated['borrowing_ids'];
+
+        DB::transaction(function () use ($ids) {
+            // Pastikan semua buku milik user dan masih berstatus dipinjam
+            $borrowings = Borrowing::where('user_id', Auth::id())
+                ->where('status', 'borrowed')
+                ->whereIn('id', $ids)
+                ->lockForUpdate()
+                ->get();
+
+            // Tolak jika ada ID yang tidak valid atau bukan milik user
+            if ($borrowings->count() !== count($ids)) {
+                abort(403, 'Ada buku yang tidak valid atau tidak dapat dikembalikan.');
+            }
+
+            Borrowing::where('user_id', Auth::id())
+                ->where('status', 'borrowed')
+                ->whereIn('id', $ids)
+                ->update([
+                    'status'      => 'return_requested',
+                    'returned_at' => now(),
+                ]);
+        });
+
+        $count = count($ids);
+
+        return redirect()
+            ->route('borrowings.user.index')
+            ->with(
+                'success',
+                "{$count} buku berhasil diajukan untuk dikembalikan. Menunggu konfirmasi admin."
+            );
     }
 }
