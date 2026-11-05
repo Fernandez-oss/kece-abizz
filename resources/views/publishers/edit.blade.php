@@ -8,11 +8,11 @@
     <a
         href="{{ route('publishers.show', ['id' => $publisher->id]) }}"
         class="text-sm text-gray-500 transition hover:text-[#16213A]">
-        ← Kembali ke Detail Publisher
+        ← Return to Publisher Details
     </a>
 
     <p class="mt-6 mb-1 text-[11px] uppercase tracking-[0.2em] text-[#A16207]">
-        Data Perpustakaan
+        Library Data
     </p>
 
     <h1 class="font-display text-3xl font-semibold text-[#16213A]">
@@ -20,7 +20,7 @@
     </h1>
 
     <p class="mt-2 text-sm text-gray-500">
-        Ubah informasi publisher.
+        Update the publisher's information.
     </p>
 </div>
 
@@ -47,7 +47,7 @@
             <label
                 for="name"
                 class="mb-2 block text-sm font-medium text-[#16213A]">
-                Nama Publisher
+                Publisher Name
             </label>
 
             <input
@@ -63,13 +63,13 @@
             <button
                 type="submit"
                 class="bg-[#16213A] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#26324f]">
-                Simpan Perubahan
+                Save Changes
             </button>
 
             <a
                 href="{{ route('publishers.show', ['id' => $publisher->id]) }}"
                 class="border border-[#E5E3DB] bg-white px-5 py-3 text-sm font-medium text-gray-600 transition hover:bg-gray-50">
-                Batal
+                Cancel
             </a>
         </div>
 

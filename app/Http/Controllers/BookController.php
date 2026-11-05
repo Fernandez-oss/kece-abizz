@@ -7,22 +7,20 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
+    /**
+     * Menampilkan Halaman Utama User (Front-end)
+     */
     public function userIndex()
     {
-        $books = Book::with(['author', 'category', 'genres'])
-            ->latest()
-            ->paginate(12);
-
-        $title = 'Home';
-
-        return view('users.index', compact('books', 'title'));
+        $books = Book::with(['author', 'category'])->latest()->take(8)->get();
+        return view('users.index', compact('books'));
     }
+
     /**
-     * Menampilkan Halaman Pencarian Buku (Search Page)
+     * Menampilkan Halaman Pencarian Buku (User)
      */
     public function search(Request $request)
     {
-        // Menerima input search baik menggunakan parameter 'q' maupun 'query'
         $query = $request->input('q') ?? $request->input('query');
 
         $books = Book::with(['author', 'category', 'genres'])
@@ -46,7 +44,8 @@ class BookController extends Controller
     public function index()
     {
         $books = Book::with(['author', 'category'])->latest()->paginate(10);
-        return view('books.index', compact('books'));
+        // PERBAIKAN: Mengarah ke folder admins
+        return view('admins.books.index', compact('books')); 
     }
 
     /**
@@ -54,7 +53,8 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('books.create');
+        // PERBAIKAN: Mengarah ke folder admins
+        return view('admins.books.create');
     }
 
     /**
@@ -82,12 +82,17 @@ class BookController extends Controller
     }
 
     /**
-     * Menampilkan Detail Buku (User & Admin)
+     * Menampilkan Detail Buku 
+     * Catatan: Fungsi ini dipakai bersama, pastikan view-nya ada.
+     * Jika terpaksa dipisah, buat fungsi showAdmin() dan showUser().
      */
     public function show($id)
     {
         $book = Book::with(['author', 'category', 'genres', 'publishers', 'bookTypes'])->findOrFail($id);
-        return view('books.show', compact('book'));
+        
+        // PERBAIKAN: Mengarah ke folder users (karena biasanya detail buku dilihat user)
+        // Jika admin juga butuh halaman ini, bisa gunakan view terpisah.
+        return view('users.show', compact('book')); 
     }
 
     /**
@@ -96,7 +101,8 @@ class BookController extends Controller
     public function edit($id)
     {
         $book = Book::findOrFail($id);
-        return view('books.edit', compact('book'));
+        // PERBAIKAN: Mengarah ke folder admins
+        return view('admins.books.edit', compact('book'));
     }
 
     /**

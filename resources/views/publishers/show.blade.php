@@ -8,11 +8,11 @@
     <a
         href="{{ route('publishers.index') }}"
         class="text-sm text-gray-500 transition hover:text-[#16213A]">
-        ← Kembali ke Publisher
+        ← Return to Publishers
     </a>
 
     <p class="mt-6 mb-1 text-[11px] uppercase tracking-[0.2em] text-[#A16207]">
-        Detail Publisher
+        Publisher Details
     </p>
 
     <h1 class="font-display text-3xl font-semibold text-[#16213A]">
@@ -30,7 +30,7 @@
 
     <div>
         <p class="text-[10px] uppercase tracking-[0.15em] text-[#A16207]">
-            Nama Publisher
+            Publisher Name
         </p>
 
         <p class="mt-2 text-2xl font-semibold text-[#16213A]">
@@ -40,7 +40,7 @@
 
     <div class="mt-6 border-t border-[#E5E3DB] pt-5">
         <p class="text-sm text-gray-500">
-            ID Publisher
+            Publisher ID
         </p>
 
         <p class="mt-1 text-sm font-medium text-[#16213A]">
@@ -50,7 +50,7 @@
 
     <div class="mt-6 border-t border-[#E5E3DB] pt-5">
         <p class="text-sm text-gray-500">
-            Ditambahkan
+            Added
         </p>
 
         <p class="mt-1 text-sm font-medium text-[#16213A]">
@@ -76,7 +76,7 @@
             <button
                 type="submit"
                 class="border border-red-200 bg-red-50 px-5 py-3 text-sm font-medium text-red-600 transition hover:bg-red-100">
-                Hapus Publisher
+                Delete Publisher
             </button>
         </form>
 

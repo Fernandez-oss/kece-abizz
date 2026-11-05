@@ -44,7 +44,8 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('home')->with('success', 'Profile setup successfully completed!');
+        // UBAH DARI route('home') MENJADI route('users.index')
+        return redirect()->route('users.index')->with('success', 'Profile setup successfully completed!');
     }
 
     /**

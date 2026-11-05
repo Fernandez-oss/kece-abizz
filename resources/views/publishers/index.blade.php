@@ -6,7 +6,7 @@
 
 <div class="mb-8 border-b border-[#E5E3DB] pb-5">
     <p class="mb-1 text-[11px] uppercase tracking-[0.2em] text-[#A16207]">
-        Data Perpustakaan
+        Library Data
     </p>
 
     <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -16,14 +16,14 @@
             </h1>
 
             <p class="mt-2 text-sm text-gray-500">
-                Daftar publisher buku perpustakaan.
+                List of library book publishers.
             </p>
         </div>
 
         <a
             href="{{ route('publishers.create') }}"
             class="inline-flex w-fit bg-[#16213A] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#26324f]">
-            + Tambah Publisher
+            + Add Publisher
         </a>
     </div>
 </div>
@@ -37,11 +37,11 @@
 @if ($publishers->isEmpty())
     <div class="border border-[#E5E3DB] bg-white px-6 py-12 text-center">
         <p class="font-medium text-[#16213A]">
-            Belum ada publisher.
+            There is no publisher yet.
         </p>
 
         <p class="mt-2 text-sm text-gray-500">
-            Tambahkan publisher untuk mulai mengelola data.
+            Add a publisher to start managing data.
         </p>
     </div>
 @else
@@ -60,7 +60,7 @@
                 </h2>
 
                 <p class="mt-4 text-sm text-gray-400 transition group-hover:text-gray-600">
-                    Klik untuk melihat detail →
+                    Click to view details →
                 </p>
             </a>
         @endforeach
