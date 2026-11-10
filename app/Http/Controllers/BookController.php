@@ -12,7 +12,7 @@ class BookController extends Controller
      */
     public function userIndex()
     {
-        $books = Book::with(['author', 'category'])->latest()->take(8)->get();
+        $books = Book::with(['author', 'categories'])->latest()->take(8)->get();
         return view('users.index', compact('books'));
     }
 
@@ -23,14 +23,14 @@ class BookController extends Controller
     {
         $query = $request->input('q') ?? $request->input('query');
 
-        $books = Book::with(['author', 'category', 'genres'])
+        $books = Book::with(['author', 'categories', 'genres'])
             ->when($query, function ($q) use ($query) {
                 return $q->where('name', 'LIKE', "%{$query}%")
                     ->orWhereHas('author', function ($authorQuery) use ($query) {
                         $authorQuery->where('name', 'LIKE', "%{$query}%");
                     })
-                    ->orWhereHas('category', function ($categoryQuery) use ($query) {
-                        $categoryQuery->where('name', 'LIKE', "%{$query}%");
+                    ->orWhereHas('categories', function ($categoriesQuery) use ($query) {
+                        $categoriesQuery->where('name', 'LIKE', "%{$query}%");
                     });
             })
             ->paginate(12);
@@ -43,9 +43,9 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::with(['author', 'category'])->latest()->paginate(10);
+        $books = Book::with(['author', 'categories'])->latest()->paginate(10);
         // PERBAIKAN: Mengarah ke folder admins
-        return view('admins.books.index', compact('books')); 
+        return view('books.index', compact('books')); 
     }
 
     /**
@@ -65,7 +65,7 @@ class BookController extends Controller
         $validated = $request->validate([
             'name'         => 'required|string|max:255',
             'author_id'    => 'nullable|exists:authors,id',
-            'category_id'  => 'nullable|exists:categories,id',
+            'categories_id'  => 'nullable|exists:categories,id',
             'description'  => 'nullable|string',
             'cover_image'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -88,11 +88,11 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $book = Book::with(['author', 'category', 'genres', 'publishers', 'bookTypes'])->findOrFail($id);
+        $book = Book::with(['author', 'categories', 'genres', 'publishers', 'bookTypes'])->findOrFail($id);
         
         // PERBAIKAN: Mengarah ke folder users (karena biasanya detail buku dilihat user)
         // Jika admin juga butuh halaman ini, bisa gunakan view terpisah.
-        return view('users.show', compact('book')); 
+        return view('books.show', compact('book')); 
     }
 
     /**
@@ -115,7 +115,7 @@ class BookController extends Controller
         $validated = $request->validate([
             'name'         => 'required|string|max:255',
             'author_id'    => 'nullable|exists:authors,id',
-            'category_id'  => 'nullable|exists:categories,id',
+            'categories_id'  => 'nullable|exists:categories,id',
             'description'  => 'nullable|string',
             'cover_image'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);

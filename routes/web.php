@@ -16,6 +16,7 @@ use App\Http\Controllers\UserCategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -189,12 +190,9 @@ Route::middleware(['auth', 'role:user'])->group(function () {
             ->name('show')->whereNumber('id');
     });
 
-    // SEARCH & CATEGORY
-    Route::get('/search', [BookController::class, 'search'])
-        ->name('search');
-
-    Route::get('/category', [UserCategoryController::class, 'index'])
-        ->name('category');
+    // SEARCH 
+    Route::get('/search', [SearchController::class, 'index'])
+    ->name('search');
 
     // CART
     Route::get('/cart', [CartController::class, 'index'])
